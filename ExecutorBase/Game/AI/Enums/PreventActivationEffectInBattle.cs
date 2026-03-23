@@ -11,5 +11,8 @@
         SamuraiDestroyer = 40509732,
         ArmadesKeeperOfBoundaries = 88033975,
         NumberS39UtopiaTheLightning = 56832966,
+        DualAvatarEmpoweredKonGyo = 33026283,
+        GoukiTheTyrantOgre = 7782069,
+        SangenpaiTranscendentDragion = 18969888
     }
 }
