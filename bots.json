@@ -36,6 +36,12 @@
         "masterRules": [ 4, 5 ]
     },
     {
+        "name": "Branded",
+        "deck": "Albaz",
+        "difficulty": 3,
+        "masterRules": [ 5 ]
+    },
+    {
         "name": "Burn",
         "deck": "Burn",
         "difficulty": 0,

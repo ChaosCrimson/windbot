@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ExecutorBase</RootNamespace>
     <AssemblyName>ExecutorBase</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <LangVersion>7</LangVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

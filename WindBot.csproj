@@ -5,7 +5,6 @@
     <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)/out/$(MSBuildProjectName)/obj</BaseIntermediateOutputPath>
     <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
   </PropertyGroup>
-  <PropertyGroup />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -15,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WindBot</RootNamespace>
     <AssemblyName>WindBot</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <LangVersion>7</LangVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -59,6 +58,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="Game\AI\Deck.cs" />
     <Compile Include="Game\AI\Decks\KashtiraExecutor.cs" />
+    <Compile Include="Game\AI\Decks\AlbazExecutor.cs" />
     <Compile Include="Game\AI\Decks\ApophisExecutor.cs" />
     <Compile Include="Game\AI\Decks\RyzealExecutor.cs" />
     <Compile Include="Game\AI\Decks\MalissExecutor.cs" />
