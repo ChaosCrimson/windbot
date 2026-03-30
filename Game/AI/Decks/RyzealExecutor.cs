@@ -3142,7 +3142,7 @@ namespace WindBot.Game.AI.Decks
             // check whether have 4 monsters for material.
             // if not, skip the second xyz monster.
             int level4Count = GetLevel4FinalCountOnField(true, out bool hasNode);
-            if (level4Count < 4) return false;
+            if (level4Count < 2) return false;
 
             // select which monster to summon
             List<ClientCard> materialList = GetLevel4OnField(null);
