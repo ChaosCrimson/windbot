@@ -155,9 +155,10 @@ namespace WindBot.Game.AI.Decks
         public override void OnNewTurn()
         {
             CardOfDemiseUsed = false;
+            base.OnNewTurn();
         }
 
-        public override bool OnSelectYesNo(long desc)
+        public override bool OnSelectYesNo(int desc)
         {
             // Yosenju Kama 2 shouldn't attack directly at most times
             if (Card == null)

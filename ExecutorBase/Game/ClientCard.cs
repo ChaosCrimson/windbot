@@ -390,6 +390,11 @@ namespace WindBot.Game
             return Id == id || Alias - Id < 10 && Alias == id;
         }
 
+        public bool IsOnField()
+        {
+            return Location == CardLocation.MonsterZone || Location == CardLocation.SpellZone || Location == CardLocation.PendulumZone || Location == CardLocation.FieldZone;
+        }
+
         public bool HasXyzMaterial()
         {
             return Overlays.Count > 0;
@@ -408,6 +413,17 @@ namespace WindBot.Game
         public int GetDefensePower()
         {
             return IsAttack() ? Attack : Defense;
+        }
+
+        public int GetOriginCode()
+        {
+            int code = Id;
+            if (Data != null)
+            {
+                if (Data.Alias > 0) code = Data.Alias;
+                else code = Data.Id;
+            }
+            return code;
         }
 
         public bool Equals(ClientCard card)

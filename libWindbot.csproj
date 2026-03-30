@@ -51,6 +51,16 @@
     <Compile Include="Game\AI\Decks\FamiliarPossessedExecutor.cs" />
     <Compile Include="Game\AI\Decks\BlackwingExecutor.cs" />
     <Compile Include="Game\AI\Decks\KashtiraExecutor.cs" />
+    <Compile Include="Game\AI\Decks\ApophisExecutor.cs" />
+    <Compile Include="Game\AI\Decks\RyzealExecutor.cs" />
+    <Compile Include="Game\AI\Decks\MalissExecutor.cs" />
+    <Compile Include="Game\AI\Decks\MalissOCGExecutor.cs" />
+    <Compile Include="Game\AI\Decks\DogmatikaExecutor.cs" />
+    <Compile Include="Game\AI\Decks\ExosisterExecutor.cs" />
+    <Compile Include="Game\AI\Decks\LabrynthExecutor.cs" />
+    <Compile Include="Game\AI\Decks\SuperheavySamuraiExecutor.cs" />
+    <Compile Include="Game\AI\Decks\YubelExecutor.cs" />
+    <Compile Include="Game\AI\Decks\ZefraExecutor.cs" />
     <Compile Include="Game\AI\Decks\LuckyExecutor.cs" />
     <Compile Include="Game\AI\Decks\BlueEyesExecutor.cs" />
     <Compile Include="Game\AI\Decks\BlueEyesMaxDragonExecutor.cs" />
@@ -60,7 +70,6 @@
     <Compile Include="Game\AI\Decks\CyberDragonExecutor.cs" />
     <Compile Include="Game\AI\Decks\DoEveryThingExecutor.cs" />
     <Compile Include="Game\AI\Decks\DarkMagicianExecutor.cs" />
-    <Compile Include="Game\AI\Decks\DragmaExecutor.cs" />
     <Compile Include="Game\AI\Decks\DragunExecutor.cs" />
     <Compile Include="Game\AI\Decks\DragunityExecutor.cs" />
     <Compile Include="Game\AI\Decks\EvilswarmExecutor.cs" />
@@ -136,10 +145,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>set E4K_OUTPUT="$(SolutionDir)output"
-if exist %25E4K_OUTPUT%25 rmdir /S /Q %25E4K_OUTPUT%25
-"$(NuGetPackageRoot)embeddinator-4000\0.4.0\tools\Embeddinator-4000.exe" "$(TargetPath)" --gen=Java --platform=Android --outdir=%25E4K_OUTPUT%25 -c -v
-</PostBuildEvent>
+    <PostBuildEvent></PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

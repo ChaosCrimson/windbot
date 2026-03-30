@@ -1,4 +1,4 @@
-using YGOSharp.OCGWrapper.Enums;
+﻿using YGOSharp.OCGWrapper.Enums;
 using System.Collections.Generic;
 using System.Linq;
 using WindBot;
@@ -83,33 +83,33 @@ namespace WindBot.Game.AI.Decks
             AddExecutor(ExecutorType.Summon, _CardId.ExodiaTheForbiddenOne, JustDontIt);
         }
 
-        private List<long> HintMsgForEnemy = new List<long>
+        private List<int> HintMsgForEnemy = new List<int>
         {
             HintMsg.Release, HintMsg.Destroy, HintMsg.Remove, HintMsg.ToGrave, HintMsg.ReturnToHand, HintMsg.ToDeck,
-            HintMsg.FusionMaterial, HintMsg.SynchroMaterial, HintMsg.XyzMaterial, HintMsg.LinkMaterial
+            HintMsg.FusionMaterial, HintMsg.SynchroMaterial, HintMsg.XyzMaterial, HintMsg.LinkMaterial, HintMsg.Disable
         };
 
-        private List<long> HintMsgForDeck = new List<long>
+        private List<int> HintMsgForDeck = new List<int>
         {
             HintMsg.SpSummon, HintMsg.ToGrave, HintMsg.Remove, HintMsg.AddToHand, HintMsg.FusionMaterial
         };
 
-        private List<long> HintMsgForSelf = new List<long>
+        private List<int> HintMsgForSelf = new List<int>
         {
             HintMsg.Equip
         };
 
-        private List<long> HintMsgForMaterial = new List<long>
+        private List<int> HintMsgForMaterial = new List<int>
         {
             HintMsg.FusionMaterial, HintMsg.SynchroMaterial, HintMsg.XyzMaterial, HintMsg.LinkMaterial, HintMsg.Release
         };
 
-        private List<long> HintMsgForMaxSelect = new List<long>
+        private List<int> HintMsgForMaxSelect = new List<int>
         {
             HintMsg.SpSummon, HintMsg.ToGrave, HintMsg.AddToHand, HintMsg.FusionMaterial, HintMsg.Destroy
         };
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> _cards, int min, int max, long hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> _cards, int min, int max, int hint, bool cancelable)
         {
             if (Duel.Phase == DuelPhase.BattleStart)
                 return null;
@@ -199,7 +199,7 @@ namespace WindBot.Game.AI.Decks
             return selected;
         }
 
-        public override int OnSelectOption(IList<long> options)
+        public override int OnSelectOption(IList<int> options)
         {
             return Program.Rand.Next(options.Count);
         }
@@ -219,11 +219,13 @@ namespace WindBot.Game.AI.Decks
 
         private bool ImFeelingLucky()
         {
+            if (Type == ExecutorType.Activate && DefaultCheckWhetherCardIsNegated(Card)) return false;
             return Program.Rand.Next(10) >= 5 && DefaultDontChainMyself();
         }
 
         private bool ImFeelingUnlucky()
         {
+            if (Type == ExecutorType.Activate && DefaultCheckWhetherCardIsNegated(Card)) return false;
             return DefaultDontChainMyself();
         }
 

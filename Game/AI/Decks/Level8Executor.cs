@@ -217,11 +217,12 @@ namespace WindBot.Game.AI.Decks
             JetSynchronUsed = false;
             ScrapWyvernUsed = false;
             MaskedChameleonUsed = false;
+            base.OnNewTurn();
         }
 
         public override void OnChainEnd()
         {
-            
+            base.OnChainEnd();
         }
 
         public override CardPosition OnSelectPosition(int cardId, IList<CardPosition> positions)
@@ -235,7 +236,7 @@ namespace WindBot.Game.AI.Decks
             return 0;
         }
 
-        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
         {
             if (location == CardLocation.SpellZone)
             {

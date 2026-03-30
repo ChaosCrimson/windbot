@@ -594,6 +594,7 @@ namespace WindBot.Game.AI.Decks
             }
             else
             {
+                if (DefaultCheckWhetherCardIsNegated(Card)) return false;
                 if (Bot.HasInHand(CardId.Spinny) || FalcoToGY(false))
                 {
                     if (Bot.HasInHand(CardId.Spinny) && !Bot.HasInGraveyard(CardId.Spinny))
@@ -779,10 +780,12 @@ namespace WindBot.Game.AI.Decks
 
         public bool G_activate()
         {
+            if (DefaultCheckWhetherCardIsNegated(Card)) return false;
             return (Duel.Player == 1);
         }
         public bool Hand_act_eff()
         {
+            if (DefaultCheckWhetherCardIsNegated(Card)) return false;
             return (Duel.LastChainPlayer == 1);
         }
 
@@ -969,7 +972,7 @@ namespace WindBot.Game.AI.Decks
             return 0;
         }
 
-        public override bool OnSelectYesNo(long desc)
+        public override bool OnSelectYesNo(int desc)
         {
             if (desc == Util.GetStringId(CardId.Sanctuary, 0))
             {
@@ -1167,7 +1170,7 @@ namespace WindBot.Game.AI.Decks
             base.OnChainEnd();
         }
 
-        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
         {
             if (player == 0)
             {

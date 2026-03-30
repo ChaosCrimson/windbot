@@ -1,7 +1,9 @@
 using YGOSharp.OCGWrapper.Enums;
 using System.Collections.Generic;
 using System.Linq;
-
+using WindBot;
+using WindBot.Game;
+using WindBot.Game.AI;
 namespace WindBot.Game.AI.Decks
 {
     [Deck("Kashtira", "AI_Kashtira")]
@@ -26,7 +28,7 @@ namespace WindBot.Game.AI.Decks
             public const int CalledbytheGrave = 24224830;
             public const int CrossoutDesignator = 65681983;
             public const int KashtiraBirth = 69540484;
-            public const int PressuredPlanetWraitsoth = 71832012;
+            public const int PrimePlanetParaisos = 71832012;
             public const int KashtiraBigBang = 33925864;
             public const int InfiniteImpermanence = 10045474;
 
@@ -52,13 +54,13 @@ namespace WindBot.Game.AI.Decks
         bool activate_KashtiraFenrir_1 = false;
         bool activate_KashtiraRiseheart_1 = false;
         bool activate_KashtiraRiseheart_2 = false;
-        bool activate_PressuredPlanetWraitsoth = false;
+        bool activate_PrimePlanetParaisos = false;
         bool activate_KashtiraScareclaw_1 = false;
         bool activate_KashtiraShangriIra = false;
         bool activate_KashtiraTearlaments_1 = false;
         bool activate_DimensionShifter = false;
-        bool activate_pre_PressuredPlanetWraitsoth = false;
-        bool activate_pre_PressuredPlanetWraitsoth_2 = false;
+        bool activate_pre_PrimePlanetParaisos = false;
+        bool activate_pre_PrimePlanetParaisos_2 = false;
         bool active_KashtiraPapiyas_1 = false;
         bool active_KashtiraPapiyas_2 = false;
         bool active_KashtiraBirth = false;
@@ -96,7 +98,7 @@ namespace WindBot.Game.AI.Decks
             AddExecutor(ExecutorType.Activate, CardId.PotofProsperity, PotofProsperityEffect);
             AddExecutor(ExecutorType.Activate, CardId.KashtiraUnicorn, KashtiraUnicornEffect);
             AddExecutor(ExecutorType.Activate, CardId.KashtiraFenrir, KashtiraFenrirEffect);
-            AddExecutor(ExecutorType.Activate, CardId.PressuredPlanetWraitsoth, PressuredPlanetWraitsothEffect);
+            AddExecutor(ExecutorType.Activate, CardId.PrimePlanetParaisos, PrimePlanetParaisosEffect);
             AddExecutor(ExecutorType.Activate, CardId.KashtiraBirth, KashtiraBirthEffect);
             AddExecutor(ExecutorType.Activate, CardId.DiablosistheMindHacker, DiablosistheMindHackerEffect);
             AddExecutor(ExecutorType.SpSummon, CardId.KashtiraFenrir, KashtiraFenrirSummon);
@@ -156,11 +158,11 @@ namespace WindBot.Game.AI.Decks
             activate_KashtiraFenrir_1 = false;
             activate_KashtiraRiseheart_1 = false;
             activate_KashtiraRiseheart_2 = false;
-            activate_PressuredPlanetWraitsoth = false;
+            activate_PrimePlanetParaisos = false;
             activate_KashtiraScareclaw_1 = false;
             activate_KashtiraTearlaments_1 = false;
             activate_KashtiraShangriIra = false;
-            activate_pre_PressuredPlanetWraitsoth_2 = false;
+            activate_pre_PrimePlanetParaisos_2 = false;
             active_KashtiraPapiyas_1 = false;
             active_KashtiraPapiyas_2 = false;
             active_KashtiraBirth = false;
@@ -173,12 +175,13 @@ namespace WindBot.Game.AI.Decks
             opt_2 = false;
             if (flag >= 0) ++flag;
             if (flag >= 2) { flag = -1; activate_DimensionShifter = false; }
+            base.OnNewTurn();
         }
-        public override bool OnSelectYesNo(long desc)
+        public override bool OnSelectYesNo(int desc)
         {
-            if (desc == Util.GetStringId(CardId.PressuredPlanetWraitsoth, 0))
+            if (desc == 1149312192)
             {
-                activate_pre_PressuredPlanetWraitsoth = true;
+                activate_pre_PrimePlanetParaisos = true;
             }
             return base.OnSelectYesNo(desc);
         }
@@ -190,23 +193,23 @@ namespace WindBot.Game.AI.Decks
             }
             return base.OnSelectPosition(cardId, positions);
         }
-        public override int OnSelectOption(IList<long> options)
+        public override int OnSelectOption(IList<int> options)
         {
             if (options.Count == 2 && options[1] == Util.GetStringId(CardId.KashtiraBirth, 0))
                 return 1;
-            if (options.Count == 2 && options.Contains(Util.GetStringId(CardId.KashtiraTearlaments, 3)))
+            if (options.Count == 2 && options.Contains(Util.GetStringId(CardId.KashtiraTearlaments, 1)))
             {
                 return (isEffectByRemove() || Enemy.Deck.Count <= 3) ? 1 : 0;
             }
-            if (options.Contains(Util.GetStringId(CardId.MechaPhantomBeastAuroradon, 4)))
+            if (options.Contains(Util.GetStringId(CardId.MechaPhantomBeastAuroradon, 3)))
             {
-                if (opt_1) return options.IndexOf(Util.GetStringId(CardId.MechaPhantomBeastAuroradon, 4));
+                if (opt_1) return options.IndexOf(Util.GetStringId(CardId.MechaPhantomBeastAuroradon, 3));
                 else if (opt_0) return 0;
-                return options.Count - 1;
+                return options[options.Count - 1];
             }
             return base.OnSelectOption(options);
         }
-        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
         {
             if (cardId == 0 && player == 1)
             {
@@ -224,7 +227,7 @@ namespace WindBot.Game.AI.Decks
             }
             return base.OnSelectPlace(cardId, player, location, available);
         }
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
         {
             if (cards.Any(card => card != null && card.Location == CardLocation.Extra
                  && hint == HintMsg.Remove && min == 1 && max == 1))
@@ -378,9 +381,9 @@ namespace WindBot.Game.AI.Decks
                 res.Reverse();
                 return Util.CheckSelectCount(res, cards, min, max);
             }
-            if (activate_pre_PressuredPlanetWraitsoth)
+            if (activate_pre_PrimePlanetParaisos)
             {
-                activate_pre_PressuredPlanetWraitsoth = false;
+                activate_pre_PrimePlanetParaisos = false;
                 IList<int> cardsId = new List<int>();
                 if (!Bot.HasInHand(CardId.KashtiraUnicorn) && !activate_KashtiraUnicorn_1 && CheckRemainInDeck(CardId.KashtiraUnicorn) > 0) cardsId.Add(CardId.KashtiraUnicorn);
                 if (!Bot.HasInHand(CardId.KashtiraFenrir) && !activate_KashtiraFenrir_1 && CheckRemainInDeck(CardId.KashtiraFenrir) > 0) cardsId.Add(CardId.KashtiraFenrir);
@@ -433,8 +436,8 @@ namespace WindBot.Game.AI.Decks
                     return Bot.GetRemainingCount(CardId.CrossoutDesignator, 1);
                 case CardId.KashtiraBirth:
                     return Bot.GetRemainingCount(CardId.KashtiraBirth, 3);
-                case CardId.PressuredPlanetWraitsoth:
-                    return Bot.GetRemainingCount(CardId.PressuredPlanetWraitsoth, 3);
+                case CardId.PrimePlanetParaisos:
+                    return Bot.GetRemainingCount(CardId.PrimePlanetParaisos, 3);
                 case CardId.KashtiraBigBang:
                     return Bot.GetRemainingCount(CardId.KashtiraBigBang, 1);
                 case CardId.InfiniteImpermanence:
@@ -880,10 +883,10 @@ namespace WindBot.Game.AI.Decks
         {
             return Card.Location == CardLocation.Hand || (Card.IsFacedown() && (Card.Location == CardLocation.SpellZone || Card.Location == CardLocation.FieldZone));
         }
-        private bool PressuredPlanetWraitsothEffect()
+        private bool PrimePlanetParaisosEffect()
         {
-            if (SpellActivate()) { activate_pre_PressuredPlanetWraitsoth_2 = true; return true; }
-            if (activate_pre_PressuredPlanetWraitsoth_2 || activate_pre_PressuredPlanetWraitsoth) return false;
+            if (SpellActivate()) { activate_pre_PrimePlanetParaisos_2 = true; return true; }
+            if (activate_pre_PrimePlanetParaisos_2 || activate_pre_PrimePlanetParaisos) return false;
             List<ClientCard> cards = GetEnemyOnFields().Where(card => card != null && !card.IsShouldNotBeTarget()).ToList();
             if (cards == null || cards.Count <= 0) return false;
             return true;
@@ -964,7 +967,7 @@ namespace WindBot.Game.AI.Decks
             if (Bot.MonsterZone.Count() <= 0
                 && ((Bot.HasInHand(CardId.KashtiraFenrir) && !activate_KashtiraFenrir_1)
                 || (Bot.HasInHand(CardId.KashtiraUnicorn) && !activate_KashtiraUnicorn_1))) return false;
-            if (Bot.HasInHand(CardId.PressuredPlanetWraitsoth) && !activate_pre_PressuredPlanetWraitsoth_2) return false;
+            if (Bot.HasInHand(CardId.PrimePlanetParaisos) && !activate_pre_PrimePlanetParaisos_2) return false;
             List<ClientCard> cards = new List<ClientCard>();
             List<ClientCard> hand_cards = Bot.Hand.GetMatchingCards(card=>card!=null && card.HasSetcode(0x189)).ToList();
             List<ClientCard> grave_cards = Bot.Graveyard.GetMatchingCards(card => card != null && card.HasSetcode(0x189)).ToList();
@@ -1206,7 +1209,7 @@ namespace WindBot.Game.AI.Decks
             else
             {
                 if (Duel.LastChainPlayer == 0 && Util.GetLastChainCard() != null &&
-                Util.GetLastChainCard().Id == CardId.PressuredPlanetWraitsoth) return false;
+                Util.GetLastChainCard().Id == CardId.PrimePlanetParaisos) return false;
                 List<ClientCard> cards = GetEnemyOnFields().Where(card => card != null && card.IsFaceup()).ToList();
                 if (cards.Count > 0)
                 {
@@ -1231,9 +1234,9 @@ namespace WindBot.Game.AI.Decks
         {
             if (Bot.ExtraDeck.Count <= 3) return false;
             List<int> cardsId = new List<int>();
-            if (!Bot.HasInHandOrInSpellZone(CardId.PressuredPlanetWraitsoth) && !activate_PressuredPlanetWraitsoth)
-                cardsId.Add(CardId.PressuredPlanetWraitsoth);
-            if (!Bot.HasInHandOrInSpellZone(CardId.PressuredPlanetWraitsoth) && !activate_PressuredPlanetWraitsoth && CheckRemainInDeck(CardId.PressuredPlanetWraitsoth) > 0)
+            if (!Bot.HasInHandOrInSpellZone(CardId.PrimePlanetParaisos) && !activate_PrimePlanetParaisos)
+                cardsId.Add(CardId.PrimePlanetParaisos);
+            if (!Bot.HasInHandOrInSpellZone(CardId.PrimePlanetParaisos) && !activate_PrimePlanetParaisos && CheckRemainInDeck(CardId.PrimePlanetParaisos) > 0)
                 cardsId.Add(CardId.Terraforming);
             if (!Bot.HasInHand(CardId.KashtiraUnicorn) && !activate_KashtiraUnicorn_1)
                 cardsId.Add(CardId.KashtiraUnicorn);

@@ -25,7 +25,7 @@ namespace WindBot.Game.AI.Decks
             AddExecutor(ExecutorType.SpellSet);
         }
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
         {
             if (Duel.Phase == DuelPhase.BattleStart)
                 return null;
@@ -39,7 +39,7 @@ namespace WindBot.Game.AI.Decks
             return selected;
         }
 
-        public override int OnSelectOption(IList<long> options)
+        public override int OnSelectOption(IList<int> options)
         {
             return Program.Rand.Next(options.Count);
         }

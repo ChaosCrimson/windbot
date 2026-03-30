@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using YGOSharp.OCGWrapper.Enums;
 
 namespace WindBot.Game
@@ -19,8 +20,12 @@ namespace WindBot.Game
 
         public int LastChainPlayer { get; set; }
         public IList<ClientCard> CurrentChain { get; set; }
+        public IList<ChainInfo> CurrentChainInfo { get; set; }
         public IList<ClientCard> ChainTargets { get; set; }
+        public IList<ClientCard> LastChainTargets { get; set; }
         public IList<ClientCard> ChainTargetOnly { get; set; }
+        public CardLocation LastChainLocation { get; set; }
+        public List<int> NegatedChainIndexList { get; set; }
         public int LastSummonPlayer { get; set; }
         public IList<ClientCard> SummoningCards { get; set; }
         public IList<ClientCard> LastSummonedCards { get; set; }
@@ -34,8 +39,12 @@ namespace WindBot.Game
             LastChainPlayer = -1;
             MainPhaseEnd = false;
             CurrentChain = new List<ClientCard>();
+            CurrentChainInfo = new List<ChainInfo>();
             ChainTargets = new List<ClientCard>();
+            LastChainTargets = new List<ClientCard>();
             ChainTargetOnly = new List<ClientCard>();
+            LastChainLocation = 0;
+            NegatedChainIndexList = new List<int>();
             LastSummonPlayer = -1;
             SummoningCards = new List<ClientCard>();
             LastSummonedCards = new List<ClientCard>();
@@ -48,8 +57,12 @@ namespace WindBot.Game
             LastChainPlayer = -1;
             MainPhaseEnd = false;
             CurrentChain.Clear();
+            CurrentChainInfo.Clear();
             ChainTargets.Clear();
+            LastChainTargets.Clear();
             ChainTargetOnly.Clear();
+            LastChainLocation = 0;
+            NegatedChainIndexList.Clear();
             LastSummonPlayer = -1;
             SummoningCards.Clear();
             LastSummonedCards.Clear();
@@ -202,6 +215,22 @@ namespace WindBot.Game
         public int GetLocalPlayer(int player)
         {
             return IsFirst ? player : 1 - player;
+        }
+
+        public ChainInfo GetCurrentSolvingChainInfo()
+        {
+            return CurrentChainInfo.LastOrDefault();
+        }
+
+        public ClientCard GetCurrentSolvingChainCard()
+        {
+            return GetCurrentSolvingChainInfo()?.RelatedCard;
+        }
+
+        public bool IsCurrentSolvingChainNegated()
+        {
+            int index = CurrentChainInfo.Count - 1;
+            return index >= 0 && NegatedChainIndexList.Contains(index);
         }
     }
 }

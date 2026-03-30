@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using YGOSharp.OCGWrapper.Enums;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -364,7 +364,7 @@ namespace WindBot.Game.AI.Decks
             }
         }
 
-        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
         {
             if (cardId == CardId.MathmechFinalSigma)
             {

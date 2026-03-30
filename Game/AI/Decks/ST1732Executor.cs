@@ -153,15 +153,16 @@ namespace WindBot.Game.AI.Decks
         {
             // reset
             BalancerLordUsed = false;
+            base.OnNewTurn();
         }
 
-        public override int OnSelectOption(IList<long> options)
+        public override int OnSelectOption(IList<int> options)
         {
             // put Moon Mirror Shield to the bottom of deck
             return options.Count == 2 ? 1 : 0;
         }
 
-        public override bool OnSelectYesNo(long desc)
+        public override bool OnSelectYesNo(int desc)
         {
             if (desc == 210) // Continue selecting? (Link Summoning)
                 return false;

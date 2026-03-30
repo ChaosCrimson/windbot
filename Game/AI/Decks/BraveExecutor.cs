@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using YGOSharp.OCGWrapper.Enums;
 using System.Collections.Generic;
 using WindBot;
@@ -180,6 +180,7 @@ namespace WindBot.Game.AI.Decks
             FusionDestinyUsed = false;
             PhoenixTarget = null;
             PhoenixSelectingTarget = 0;
+            base.OnNewTurn();
         }
 
         public override CardPosition OnSelectPosition(int cardId, IList<CardPosition> positions)
@@ -195,7 +196,7 @@ namespace WindBot.Game.AI.Decks
             return 0;
         }
 
-        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
         {
             if (location == CardLocation.MonsterZone)
             {
@@ -212,7 +213,7 @@ namespace WindBot.Game.AI.Decks
             return 0;
         }
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
         {
             if (hint != HintMsg.Destroy)
                 PhoenixSelectingTarget = 0;
@@ -264,7 +265,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectCard(cards, min, max, hint, cancelable);
         }
 
-        public override int OnSelectOption(IList<long> options)
+        public override int OnSelectOption(IList<int> options)
         {
             if (options.Count == 2 && options[0] == Util.GetStringId(CardId.CupidPitch, 1))
                 return 0;
@@ -479,6 +480,7 @@ namespace WindBot.Game.AI.Decks
 
         private bool AquamancerOfTheSanctuarySearchEffect()
         {
+            if (DefaultCheckWhetherCardIsNegated(Card)) return false;
             if (Card.Location == CardLocation.Grave)
             {
                 AI.SelectCard(CardLocation.Deck);
@@ -626,6 +628,7 @@ namespace WindBot.Game.AI.Decks
 
         private bool JetSynchronEffect()
         {
+            if (DefaultCheckWhetherCardIsNegated(Card)) return false;
             int[] materials = new[] {
                 CardId.MechaPhantomBeastToken
             };
@@ -786,6 +789,7 @@ namespace WindBot.Game.AI.Decks
 
         private bool PredaplantVerteAnacondaEffect()
         {
+            if (DefaultCheckWhetherCardIsNegated(Card)) return false;
             if (ActivateDescription == Util.GetStringId(CardId.PredaplantVerteAnaconda, 0))
                 return false;
             FusionDestinyUsed = true;
@@ -858,6 +862,7 @@ namespace WindBot.Game.AI.Decks
 
         private bool DestinyHeroCelestialEffect()
         {
+            if (DefaultCheckWhetherCardIsNegated(Card)) return false;
             if (!Bot.HasInGraveyard(CardId.DestinyHeroDasher))
                 return false;
             AI.SelectCard(CardId.DestinyHeroDasher);
@@ -971,6 +976,7 @@ namespace WindBot.Game.AI.Decks
 
         private bool VirtualWorldKyubiShenshenEffect()
         {
+            if (DefaultCheckWhetherCardIsNegated(Card)) return false;
             if (Card.Location == CardLocation.MonsterZone && Bot.HasInBanished(CardId.AquamancerOfTheSanctuary))
             {
                 AI.SelectCard(CardId.AquamancerOfTheSanctuary);

@@ -7,6 +7,10 @@ namespace WindBot.Game.AI
 {
     public abstract class DefaultExecutor : Executor
     {
+    // Compatibility state used by newer IceYGO executors.
+    protected readonly List<int> enemyResolvedEffectIdList = new List<int>();
+    protected readonly List<int> infiniteImpermanenceNegatedColumns = new List<int>();
+
         protected class _CardId
         {
             public const int JizukirutheStarDestroyingKaiju = 63941210;
@@ -94,16 +98,26 @@ namespace WindBot.Game.AI
             public const int MaxxC = 23434538;
             public const int LockBird = 94145021;
             public const int GhostOgreAndSnowRabbit = 59438930;
+            public const int GhostMournerMoonlitChill = 52038441;
             public const int GhostBelle = 73642296;
             public const int EffectVeiler = 97268402;
             public const int ArtifactLancea = 34267821;
+            public const int DimensionShifter = 91800273;
+            public const int MulcharmyFuwalos = 42141493;
+            public const int MulcharmyNyalus = 87126721;
+            public const int MulcharmyPurulia = 84192580;
 
             public const int CalledByTheGrave = 24224830;
+            public const int CrossoutDesignator = 65681983;
             public const int InfiniteImpermanence = 10045474;
             public const int GalaxySoldier = 46659709;
             public const int MacroCosmos = 30241314;
+            public const int DimensionalFissure = 81674782;
+            public const int BanisheroftheRadiance = 94853057;
+            public const int BanisheroftheLight = 61528025;
             public const int UpstartGoblin = 70368879;
             public const int CyberEmergency = 60600126;
+            public const int PotOfExtravagance = 84211599;
 
             public const int EaterOfMillions = 63845230;
 
@@ -116,7 +130,21 @@ namespace WindBot.Game.AI
             public const int ImperialOrder = 61740673;
             public const int RoyalDecreel = 51452091;
             public const int NaturiaBeast = 33198837;
+            public const int NaturalExterio = 99916754;
             public const int AntiSpellFragrance = 58921041;
+            public const int Number41BagooskatheTerriblyTiredTapir = 90590303;
+            public const int SwordsmanLV7 = 37267041;
+            public const int SkillDrain = 82732705;
+            public const int KashtiraAriseHeart = 48626373;
+            public const int DivineArsenalAAZEUS_SkyThunder = 90448279;
+            public const int MaskedHERODarkLaw = 58481572;
+            public const int LightningStorm = 14532163;
+        }
+
+        protected class _Setcode
+        {
+            public const int TimeLord = 0x4a;
+            public const int Danger = 0x11e;
         }
 
         protected DefaultExecutor(GameAI ai, Duel duel)
@@ -475,6 +503,26 @@ namespace WindBot.Game.AI
                 return false;
             return Duel.LastChainPlayer == 1;
         }
+
+        protected bool DefaultCheckWhetherSpellActivateWillBeNegated(ClientCard target)
+        {
+            if (target == null)
+                return false;
+            if (!(target.IsSpell() || target.IsTrap()))
+                return false;
+            if (target.Location != CardLocation.SpellZone && target.Location != CardLocation.Hand)
+                return false;
+
+            if (target.IsSpell())
+                return DefaultSpellWillBeNegated();
+            return DefaultTrapWillBeNegated();
+        }
+
+        protected bool DefaultCheckWhetherEnemyCanDraw()
+        {
+            // Keep this intentionally simple as a compatibility shim.
+            return true;
+        }
         /// <summary>
         /// Always activate unless the activating card is disabled
         /// </summary>
@@ -599,7 +647,7 @@ namespace WindBot.Game.AI
         /// </summary>
         protected bool DefaultSolemnJudgment()
         {
-            return !Util.IsChainTargetOnly(Card) && !(Duel.Player == 0 && Duel.LastChainPlayer == -1) && DefaultTrap();
+            return !Util.IsChainTargetOnly(Card) && !(Duel.Player == 0 && Duel.LastChainPlayer == -1) && !DefaultOnlyHorusSpSummoning() && DefaultTrap();
         }
 
         /// <summary>
@@ -607,7 +655,7 @@ namespace WindBot.Game.AI
         /// </summary>
         protected bool DefaultSolemnWarning()
         {
-            return (Bot.LifePoints > 2000) && !(Duel.Player == 0 && Duel.LastChainPlayer == -1) && DefaultTrap();
+            return (Bot.LifePoints > 2000) && !(Duel.Player == 0 && Duel.LastChainPlayer == -1) && !DefaultOnlyHorusSpSummoning() && DefaultTrap();
         }
 
         /// <summary>
@@ -615,7 +663,7 @@ namespace WindBot.Game.AI
         /// </summary>
         protected bool DefaultSolemnStrike()
         {
-            return (Bot.LifePoints > 1500) && !(Duel.Player == 0 && Duel.LastChainPlayer == -1) && DefaultTrap();
+            return (Bot.LifePoints > 1500) && !(Duel.Player == 0 && Duel.LastChainPlayer == -1) && !DefaultOnlyHorusSpSummoning() && DefaultTrap();
         }
 
         /// <summary>
@@ -690,6 +738,11 @@ namespace WindBot.Game.AI
             return (Card.IsTrap() || Card.HasType(CardType.QuickPlay) || DefaultSpellMustSetFirst()) && Bot.GetSpellCountWithoutField() < 4;
         }
 
+        protected virtual bool DefaultSetForDiabellze()
+        {
+            return DefaultSpellSet();
+        }
+
         /// <summary>
         /// Summon with no tribute, or with tributes ATK lower.
         /// </summary>
@@ -757,7 +810,8 @@ namespace WindBot.Game.AI
         /// </summary>
         protected bool DefaultSpellWillBeNegated()
         {
-            return (Bot.HasInSpellZone(_CardId.ImperialOrder, true, true) || Enemy.HasInSpellZone(_CardId.ImperialOrder, true)) && !Util.ChainContainsCard(_CardId.ImperialOrder);
+            return (Bot.HasInSpellZone(_CardId.ImperialOrder, true, true) || Enemy.HasInSpellZone(_CardId.ImperialOrder, true)) && !Util.ChainContainsCard(_CardId.ImperialOrder)
+                || DefaultCheckWhetherCardIsNegated(Card);
         }
 
         /// <summary>
@@ -765,7 +819,8 @@ namespace WindBot.Game.AI
         /// </summary>
         protected bool DefaultTrapWillBeNegated()
         {
-            return (Bot.HasInSpellZone(_CardId.RoyalDecreel, true, true) || Enemy.HasInSpellZone(_CardId.RoyalDecreel, true)) && !Util.ChainContainsCard(_CardId.RoyalDecreel);
+            return (Bot.HasInSpellZone(_CardId.RoyalDecreel, true, true) || Enemy.HasInSpellZone(_CardId.RoyalDecreel, true)) && !Util.ChainContainsCard(_CardId.RoyalDecreel)
+                || DefaultCheckWhetherCardIsNegated(Card);
         }
 
         /// <summary>
@@ -806,6 +861,7 @@ namespace WindBot.Game.AI
         /// </summary>
         protected bool DefaultTrap()
         {
+            if (DefaultCheckWhetherCardIsNegated(Card)) return false;
             return (Duel.LastChainPlayer == -1 && Duel.LastSummonPlayer != 0) || Duel.LastChainPlayer == 1;
         }
 
@@ -1170,12 +1226,39 @@ namespace WindBot.Game.AI
         {
             if (Card.Location == CardLocation.Hand)
             {
+                if (DefaultCheckWhetherCardIsNegated(Card)) return false;
                 return Bot.BattlingMonster.IsAttack() &&
                     (((Bot.BattlingMonster.Attack < Enemy.BattlingMonster.Attack) || Bot.BattlingMonster.Attack >= Enemy.LifePoints)
                     || ((Bot.BattlingMonster.Attack < Enemy.BattlingMonster.Defense) && (Bot.BattlingMonster.Attack + Enemy.BattlingMonster.Attack > Enemy.BattlingMonster.Defense)));
             }
 
             return Util.IsTurn1OrMain2();
+        }
+
+        protected bool DefaultCheckWhetherCardIsNegated(ClientCard card)
+        {
+            if (card == null) return true;
+            return card.IsDisabled() && card.IsOnField();
+        }
+
+        protected bool DefaultCheckWhetherCardIdIsNegated(int cardId)
+        {
+            return false;
+        }
+
+        protected int GetCalledbytheGraveIdCount(int cardId)
+        {
+            return 0;
+        }
+
+        protected bool DefaultOnlyHorusSpSummoning()
+        {
+            return false;
+        }
+
+        protected bool DefaultCheckWhetherBotCanSearch()
+        {
+            return true;
         }
     }
 }

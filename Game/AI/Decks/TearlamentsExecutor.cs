@@ -2,7 +2,10 @@ using YGOSharp.OCGWrapper;
 using YGOSharp.OCGWrapper.Enums;
 using System.Collections.Generic;
 using System.Linq;
-
+using WindBot;
+using WindBot.Game;
+using WindBot.Game.AI;
+using System;
 namespace WindBot.Game.AI.Decks
 {
     [Deck("Tearlaments", "AI_Tearlaments")]
@@ -45,10 +48,10 @@ namespace WindBot.Game.AI.Decks
             public const int IP = 65741786;
         }
         // false: EDOPro
-        const bool IS_YGOPRO = false;
+        const bool IS_YGOPRO = true;
         // YGOPro: 0x181
         // EDOPro: 0x182
-        int SETCODE = 0x182;
+        int SETCODE = 0x181;
 
         bool activate_TearlamentsScheiren_1 = false;
         bool activate_TearlamentsScheiren_2 = false;
@@ -179,8 +182,8 @@ namespace WindBot.Game.AI.Decks
             AddExecutor(ExecutorType.Activate, CardId.BaronnedeFleur, BaronnedeFleurEffect);
             AddExecutor(ExecutorType.Activate, CardId.ElderEntityNtss, ElderEntityNtssEffect);
             AddExecutor(ExecutorType.Activate, CardId.PredaplantDragostapelia, PredaplantDragostapeliaEffect);
-            AddExecutor(ExecutorType.Activate, CardId.HeraldofOrangeLight);
-            AddExecutor(ExecutorType.Activate, CardId.HeraldofGreenLight);
+            AddExecutor(ExecutorType.Activate, CardId.HeraldofOrangeLight, DefaultTrap);
+            AddExecutor(ExecutorType.Activate, CardId.HeraldofGreenLight, DefaultTrap);
             AddExecutor(ExecutorType.Activate, CardId.TearlamentsRulkallos, TearlamentsRulkallosEffect);
             AddExecutor(ExecutorType.Activate, CardId.FADawnDragster);
             AddExecutor(ExecutorType.Activate, CardId.PrimevalPlanetPerlereino, PrimevalPlanetPerlereinoEffect);
@@ -272,6 +275,7 @@ namespace WindBot.Game.AI.Decks
             spsummoned = false;
             summon_SprightElf = false;
             TearlamentsKitkallos_summoned = false;
+            base.OnNewTurn();
         }
         private List<ClientCard> GetZoneCards(CardLocation loc, ClientField player)
         {
@@ -653,7 +657,7 @@ namespace WindBot.Game.AI.Decks
             }
             return base.OnSelectPosition(cardId, positions);
         }
-        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
         {
             if (player == 0 && location == CardLocation.MonsterZone)
             {
@@ -697,7 +701,7 @@ namespace WindBot.Game.AI.Decks
             }
             return base.OnSelectPlace(cardId, player, location, available);
         }
-        public override int OnSelectOption(IList<long> options)
+        public override int OnSelectOption(IList<int> options)
         {
             if (options.Count == 2 && (IS_YGOPRO ? options.Contains(1190) : options.Contains(573)))
             {
@@ -705,9 +709,9 @@ namespace WindBot.Game.AI.Decks
             }
             return base.OnSelectOption(options);
         }
-        public override bool OnSelectYesNo(long desc)
+        public override bool OnSelectYesNo(int desc)
         {
-            if (desc == Util.GetStringId(CardId.PrimevalPlanetPerlereino, 0)) pre_activate_PrimevalPlanetPerlereino = true;
+            if (desc == 1233663200) pre_activate_PrimevalPlanetPerlereino = true;
             return base.OnSelectYesNo(desc);
         }
         public override void OnSelectChain(IList<ClientCard> cards)
@@ -978,7 +982,7 @@ namespace WindBot.Game.AI.Decks
             if (Bot.HasInMonstersZone(CardId.ElShaddollWinda, true, false, true) ||
                 Enemy.HasInMonstersZone(CardId.ElShaddollWinda, true, false, true)) spsummoned = true;
         }
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
         {
             if ((AI.HaveSelectedCards() && mcard_0.All(card => card == null) && ran_fusion_mode_0.All(flag => !flag))
                 || (hint == HintMsg.FusionMaterial)) return null;
@@ -989,7 +993,8 @@ namespace WindBot.Game.AI.Decks
                 return Util.CheckSelectCount(CardsIdToClientCards(ids, cards, false, true), cards, min, max);
 
             }
-            if (select_TearlamentsKitkallos && hint == HintMsg.AddToHand)
+            //!IS_YGOPRO && select_TearlamentsKitkallos && hint == HintMsg.AddToHand
+            if ((IS_YGOPRO && hint == HintMsg.OperateCard) || (!IS_YGOPRO && select_TearlamentsKitkallos && hint == HintMsg.AddToHand))
             {
                 if (!IS_YGOPRO) select_TearlamentsKitkallos = false;
                 IList<int> ids = new List<int>();
@@ -1425,7 +1430,8 @@ namespace WindBot.Game.AI.Decks
                 res = CardsIdToClientCards(ids, cards, false);
                 return res.Count > 0 ? Util.CheckSelectCount(res, cards, min, max) : null;
             }
-            if (hint == HintMsg.Negate)
+            //(IS_YGOPRO && hint == HintMsg.Disable) || (!IS_YGOPRO && hint == HintMsg.Negate)
+            if (IS_YGOPRO && hint == HintMsg.Disable)
             {
                 if (chain_TearlamentsSulliek != null && cards.Contains(chain_TearlamentsSulliek))
                 {
@@ -1699,7 +1705,7 @@ namespace WindBot.Game.AI.Decks
             if (Duel.Turn == 1 || Enemy.GetMonsterCount() <= 0) return false;
             List<ClientCard> e_cards = Enemy.GetMonsters().Where(card => card != null && card.IsFaceup() && card.IsAttack()).ToList();
             List<ClientCard> b_cards = Bot.GetMonsters().Where(card => card != null && card.IsFaceup() && card.IsAttack()).ToList();
-            if ((e_cards.Count <= 0 || b_cards.Count <= 0) && Enemy.MonsterZone.GetDangerousMonster() == null) return false;
+            if (e_cards.Count <= 0 || b_cards.Count <= 0 || Enemy.MonsterZone.GetDangerousMonster() == null) return false;
             e_cards.Sort(CardContainer.CompareCardAttack);
             e_cards.Reverse();
             b_cards.Sort(CardContainer.CompareCardAttack);
@@ -2167,6 +2173,7 @@ namespace WindBot.Game.AI.Decks
         }
         private bool EvaEffect()
         {
+            if (DefaultCheckWhetherCardIsNegated(Card)) return false;
             List<ClientCard> cards = Bot.GetGraveyardMonsters().Where(card => card != null && card.HasAttribute(CardAttribute.Light) && card.HasRace(CardRace.Fairy) && card != Card).ToList();
             if (cards.Count <= 0) return false;
             activate_Eva = true;
@@ -2202,6 +2209,7 @@ namespace WindBot.Game.AI.Decks
         }
         private bool MudoratheSwordOracleEffect()
         {
+            if (DefaultCheckWhetherCardIsNegated(Card)) return false;
             if (Card.Location == CardLocation.Hand)
             {
                 if ((Bot.Hand.Count(card => card != null && card.Id == CardId.AgidotheAncientSentinel) <= 0 || activate_AgidotheAncientSentinel_2)

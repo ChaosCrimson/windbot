@@ -64,6 +64,11 @@ namespace WindBot.Game
             _dialogs.SendDuelStart();
         }
 
+        public void SendCustomChat(int index, params object[] opts)
+        {
+            _dialogs.SendCustomChat(index, opts);
+        }
+
         /// <summary>
         /// Called when the AI do the rock-paper-scissors.
         /// </summary>

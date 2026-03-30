@@ -6,6 +6,26 @@ namespace WindBot.Game.AI
 {
     public class AIUtil
     {
+        public struct StringId
+        {
+            private readonly long _value;
+
+            public StringId(long value)
+            {
+                _value = value;
+            }
+
+            public static implicit operator long(StringId value)
+            {
+                return value._value;
+            }
+
+            public static implicit operator int(StringId value)
+            {
+                return unchecked((int)value._value);
+            }
+        }
+
         public Duel Duel { get; private set; }
         public ClientField Bot { get; private set; }
         public ClientField Enemy { get; private set; }
@@ -231,9 +251,9 @@ namespace WindBot.Game.AI
             }
         }
 
-        public long GetStringId(long id, int option)
+        public StringId GetStringId(long id, int option)
         {
-            return (long)(option & 0xfffff) | (id << 20);
+            return new StringId(((long)(option & 0xfffff)) | (id << 20));
         }
 
         public bool IsTurn1OrMain2()
@@ -441,6 +461,95 @@ namespace WindBot.Game.AI
             }
 
             return selected;
+        }
+
+        public List<List<ClientCard>> GetXyzMaterials(IList<ClientCard> param_pre_materials, int level, int material_count, bool material_count_above = false, Func<ClientCard, bool> material_func = null)
+        {
+            List<List<ClientCard>> result = new List<List<ClientCard>>();
+            List<ClientCard> pre_materials = param_pre_materials?
+                .Where(card => card != null && !(card.IsFacedown() && card.Location == CardLocation.MonsterZone) && card.Level == level)
+                .ToList();
+            if (pre_materials == null || pre_materials.Count < material_count) return result;
+            Func<ClientCard, bool> filter = material_func ?? (card => true);
+            for (int i = 1; i < Math.Pow(2, pre_materials.Count); i++)
+            {
+                List<ClientCard> temp_materials = new List<ClientCard>();
+                string binaryString = Convert.ToString(i, 2).PadLeft(pre_materials.Count, '0');
+                char[] reversedBinaryChars = binaryString.Reverse().ToArray();
+                for (int j = 0; j < pre_materials.Count; j++)
+                {
+                    if (reversedBinaryChars[j] == '1' && filter(pre_materials[j]))
+                    {
+                        temp_materials.Add(pre_materials[j]);
+                    }
+                }
+                if (material_count_above ? temp_materials.Count >= material_count : temp_materials.Count == material_count)
+                {
+                    result.Add(temp_materials);
+                }
+            }
+            return result;
+        }
+
+        public List<List<ClientCard>> GetSynchroMaterials(IList<ClientCard> param_pre_materials, int level, int tuner_count, int n_tuner_count, bool tuner_count_above = false, bool n_tuner_count_above = true, Func<ClientCard, bool> tuner_func = null, Func<ClientCard, bool> n_tuner_func = null)
+        {
+            List<List<ClientCard>> allByLevel = new List<List<ClientCard>>();
+            List<ClientCard> pre_materials = param_pre_materials?
+                .Where(card => card != null && !(card.IsFacedown() && card.Location == CardLocation.MonsterZone) && card.Level > 0)
+                .ToList();
+            if (pre_materials == null || pre_materials.Count < tuner_count + n_tuner_count) return allByLevel;
+
+            Func<ClientCard, bool> tunerFilter = tuner_func ?? (card => true);
+            Func<ClientCard, bool> nonTunerFilter = n_tuner_func ?? (card => true);
+
+            pre_materials.Sort(CardContainer.CompareCardLevel);
+            Stack<object[]> materials_stack = new Stack<object[]>();
+            for (int i = 0; i < pre_materials.Count; i++)
+            {
+                if (pre_materials[i].Level > level) break;
+                materials_stack.Push(new object[] { i, pre_materials[i].Level, new List<ClientCard> { pre_materials[i] } });
+            }
+
+            while (materials_stack.Count > 0)
+            {
+                object[] data = materials_stack.Pop();
+                int index = (int)data[0];
+                int sum = (int)data[1];
+                List<ClientCard> temp_materials = (List<ClientCard>)data[2];
+
+                if (sum == level)
+                {
+                    allByLevel.Add(temp_materials);
+                    continue;
+                }
+                if (sum > level) continue;
+
+                for (int i = index + 1; i < pre_materials.Count; i++)
+                {
+                    int nextLevel = pre_materials[i].Level;
+                    if (sum + nextLevel > level) break;
+                    var next = new List<ClientCard>(temp_materials) { pre_materials[i] };
+                    materials_stack.Push(new object[] { i, sum + nextLevel, next });
+                }
+            }
+
+            List<List<ClientCard>> result = new List<List<ClientCard>>();
+            foreach (List<ClientCard> materials in allByLevel)
+            {
+                List<ClientCard> tunerMaterials = new List<ClientCard>();
+                List<ClientCard> nonTunerMaterials = new List<ClientCard>();
+                foreach (ClientCard material in materials)
+                {
+                    if (material.HasType(CardType.Tuner) && tunerFilter(material)) tunerMaterials.Add(material);
+                    else if (!material.HasType(CardType.Tuner) && nonTunerFilter(material)) nonTunerMaterials.Add(material);
+                }
+                if ((tuner_count_above ? tunerMaterials.Count >= tuner_count : tunerMaterials.Count == tuner_count)
+                    && (n_tuner_count_above ? nonTunerMaterials.Count >= n_tuner_count : nonTunerMaterials.Count == n_tuner_count))
+                {
+                    result.Add(materials);
+                }
+            }
+            return result;
         }
     }
 }

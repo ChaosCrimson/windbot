@@ -12,6 +12,12 @@
         "masterRules": [ 4, 5 ]
     },
     {
+        "name": "Apophis",
+        "deck": "Apophis",
+        "difficulty": 3,
+        "masterRules": [ 5 ]
+    },
+    {
         "name": "Blue-Eyes",
         "deck": "Blue-Eyes",
         "difficulty": 2,
@@ -72,6 +78,12 @@
         "masterRules": [ 3, 4, 5 ]
     },
     {
+        "name": "Exosister",
+        "deck": "Exosister",
+        "difficulty": 3,
+        "masterRules": [ 5 ]
+    },
+    {
         "name": "Familiar Possessed",
         "deck": "FamiliarPossessed",
         "difficulty": 0,
@@ -108,10 +120,28 @@
         "masterRules": [ 4, 5 ]
     },
     {
+        "name": "Labrynth",
+        "deck": "Labrynth",
+        "difficulty": 3,
+        "masterRules": [ 5 ]
+    },
+    {
         "name": "Lightsworn Shaddoll Dino",
         "deck": "LightswornShaddoldinosour",
         "difficulty": 3,
         "masterRules": [ 3, 4, 5 ]
+    },
+    {
+        "name": "Maliss",
+        "deck": "Maliss",
+        "difficulty": 3,
+        "masterRules": [ 5 ]
+    },
+    {
+        "name": "Maliss OCG",
+        "deck": "MalissOCG",
+        "difficulty": 3,
+        "masterRules": [ 5 ]
     },
     {
         "name": "Mathmech",
@@ -168,6 +198,12 @@
         "masterRules": [ 3, 4, 5 ]
     },
     {
+        "name": "Ryzeal",
+        "deck": "Ryzeal",
+        "difficulty": 3,
+        "masterRules": [ 5 ]
+    },
+    {
         "name": "Salamangreat",
         "deck": "Salamangreat",
         "difficulty": 3,
@@ -178,6 +214,12 @@
         "deck": "SkyStriker",
         "difficulty": 3,
         "masterRules": [ 4, 5 ]
+    },
+    {
+        "name": "Superheavy Samurai",
+        "deck": "SuperheavySamurai",
+        "difficulty": 3,
+        "masterRules": [ 5 ]
     },
     {
         "name": "Swordsoul",
@@ -232,6 +274,18 @@
         "deck": "Yosenju",
         "difficulty": 0,
         "masterRules": [ 3, 4, 5 ]
+    },
+    {
+        "name": "Yubel",
+        "deck": "Yubel",
+        "difficulty": 3,
+        "masterRules": [ 5 ]
+    },
+    {
+        "name": "Zefra",
+        "deck": "Zefra",
+        "difficulty": 3,
+        "masterRules": [ 5 ]
     },
     {
         "name": "ZEXAL Weapon",
