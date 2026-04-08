@@ -139,6 +139,10 @@ namespace WindBot.Game
             _messages.Add(GameMessage.AttackDisabled, OnAttackDisabled);
             _messages.Add(GameMessage.PosChange, OnPosChange);
             _messages.Add(GameMessage.Chaining, OnChaining);
+            _messages.Add(GameMessage.ChainSolving, OnChainSolving);
+            _messages.Add(GameMessage.ChainNegated, OnChainNegated);
+            _messages.Add(GameMessage.ChainDisabled, OnChainDisabled);
+            _messages.Add(GameMessage.ChainSolved, OnChainSolved);
             _messages.Add(GameMessage.ChainEnd, OnChainEnd);
             _messages.Add(GameMessage.SortCard, OnCardSorting);
             _messages.Add(GameMessage.SortChain, OnChainSorting);
@@ -424,7 +428,14 @@ namespace WindBot.Game
             deck = packet.ReadInt16();
             extra = packet.ReadInt16();
             _duel.Fields[GetLocalPlayer(1)].Init(deck, extra);
-
+            //just in case of ending the duel in chain's solving
+            _duel.CurrentChain.Clear();
+            _duel.CurrentChainInfo.Clear();
+            _duel.ChainTargets.Clear();
+            _duel.ChainTargetOnly.Clear();
+            _duel.SummoningCards.Clear();
+            _duel.SolvingChainIndex = 0;
+            _duel.NegatedChainIndexList.Clear();
             Logger.DebugWriteLine("Duel started: " + _room.Names[0] + " versus " + _room.Names[1]);
             _ai.OnStart();
         }
@@ -814,6 +825,8 @@ namespace WindBot.Game
             if (card.Id == 0)
                 card.SetId(cardId);
             int cc = GetLocalPlayer(packet.ReadByte());
+            packet.ReadInt16(); // trigger location + trigger sequence
+            int desc = packet.ReadInt32();
             if (_debug)
                 if (card != null) Logger.WriteLine("(" + cc.ToString() + " 's " + (card.Name ?? "UnKnowCard") + " activate effect)");
             _ai.OnChaining(card, cc);
@@ -821,8 +834,33 @@ namespace WindBot.Game
             _duel.ChainTargetOnly.Clear();
             _duel.LastSummonPlayer = -1;
             _duel.CurrentChain.Add(card);
+            _duel.CurrentChainInfo.Add(new ChainInfo(card, cc, desc));
             _duel.LastChainPlayer = cc;
 
+        }
+
+        private void OnChainSolving(BinaryReader packet)
+        {
+            int chainIndex = packet.ReadByte();
+            _duel.SolvingChainIndex = chainIndex;
+        }
+
+        private void OnChainNegated(BinaryReader packet)
+        {
+            int chainIndex = packet.ReadByte();
+            _duel.NegatedChainIndexList.Add(chainIndex);
+        }
+
+        private void OnChainDisabled(BinaryReader packet)
+        {
+            int chainIndex = packet.ReadByte();
+            _duel.NegatedChainIndexList.Add(chainIndex);
+        }
+
+        private void OnChainSolved(BinaryReader packet)
+        {
+            int chainIndex = packet.ReadByte();
+            _ai.OnChainSolved(chainIndex);
         }
 
         private void OnChainEnd(BinaryReader packet)
@@ -831,8 +869,11 @@ namespace WindBot.Game
             _ai.OnChainEnd();
             _duel.LastChainPlayer = -1;
             _duel.CurrentChain.Clear();
+            _duel.CurrentChainInfo.Clear();
             _duel.ChainTargets.Clear();
             _duel.ChainTargetOnly.Clear();
+            _duel.SolvingChainIndex = 0;
+            _duel.NegatedChainIndexList.Clear();
         }
 
         private void OnCardSorting(BinaryReader packet)

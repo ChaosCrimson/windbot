@@ -142,6 +142,11 @@ namespace WindBot.Game
         {
             Executor.OnChaining(player,card);
         }
+
+        public void OnChainSolved(int chainIndex)
+        {
+            Executor.OnChainSolved(chainIndex);
+        }
         
         /// <summary>
         /// Called when a chain has been solved.
