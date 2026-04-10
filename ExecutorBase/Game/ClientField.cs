@@ -18,7 +18,7 @@ namespace WindBot.Game
         public int LifePoints;
         public ClientCard BattlingMonster;
         public bool UnderAttack;
-        public HashSet<int> HintDescriptions { get; private set; }
+        public HashSet<long> HintDescriptions { get; private set; }
 
         public ClientField()
         {
@@ -33,7 +33,7 @@ namespace WindBot.Game
             Banished = new List<ClientCard>();
             Deck = new List<ClientCard>();
             ExtraDeck = new List<ClientCard>();
-            HintDescriptions = new HashSet<int>();
+            HintDescriptions = new HashSet<long>();
 
             for (int i = 0; i < deck; ++i)
                 Deck.Add(new ClientCard(0, CardLocation.Deck, -1, 0));

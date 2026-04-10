@@ -251,9 +251,9 @@ namespace WindBot.Game.AI
             }
         }
 
-        public StringId GetStringId(long id, int option)
+        public long GetStringId(long id, int option)
         {
-            return new StringId(((long)(option & 0xfffff)) | (id << 20));
+            return (long)(option & 0xfffff) | (id << 20);
         }
 
         public bool IsTurn1OrMain2()

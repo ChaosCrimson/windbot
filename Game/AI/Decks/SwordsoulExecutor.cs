@@ -1490,7 +1490,7 @@ namespace WindBot.Game.AI.Decks
 
         public bool TenyiForShamanSpSummon()
         {
-            List<int> checkEffectDesc = new List<int>{
+            List<long> checkEffectDesc = new List<long>{
                 Util.GetStringId(CardId.TenyiSpirit_Adhara, 0), Util.GetStringId(CardId.TenyiSpirit_Vishuda, 0),
                 Util.GetStringId(CardId.TenyiSpirit_Ashuna, 0)
             };
@@ -1519,7 +1519,7 @@ namespace WindBot.Game.AI.Decks
 
         public bool TenyiForBlackoutSpSummon()
         {
-            List<int> checkEffectDesc = new List<int>{
+            List<long> checkEffectDesc = new List<long>{
                 Util.GetStringId(CardId.TenyiSpirit_Adhara, 0), Util.GetStringId(CardId.TenyiSpirit_Vishuda, 0),
                 Util.GetStringId(CardId.TenyiSpirit_Ashuna, 0)
             };

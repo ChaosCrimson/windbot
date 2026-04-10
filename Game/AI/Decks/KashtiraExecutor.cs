@@ -193,7 +193,7 @@ namespace WindBot.Game.AI.Decks
             }
             return base.OnSelectPosition(cardId, positions);
         }
-        public override int OnSelectOption(IList<int> options)
+        public override int OnSelectOption(IList<long> options)
         {
             if (options.Count == 2 && options[1] == Util.GetStringId(CardId.KashtiraBirth, 0))
                 return 1;
@@ -205,7 +205,7 @@ namespace WindBot.Game.AI.Decks
             {
                 if (opt_1) return options.IndexOf(Util.GetStringId(CardId.MechaPhantomBeastAuroradon, 3));
                 else if (opt_0) return 0;
-                return options[options.Count - 1];
+                return (int)options[options.Count - 1];
             }
             return base.OnSelectOption(options);
         }

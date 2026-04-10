@@ -1805,8 +1805,8 @@ namespace WindBot.Game.AI.Decks
             // รายการเป้า (ศัตรูก่อน ถ้าไม่มีค่อย fallback)
             List<ClientCard> targetList = GetNormalEnemyTargetList(true, true);
             int desc = (int)ActivateDescription;
-            int d1 = Util.GetStringId(CardId.VARUDASN_FINAL_BRINGER, 1); // ใช้ทั้ง e1 (Negate) และ e2 (Battle Start destroy)
-            int d2 = Util.GetStringId(CardId.VARUDASN_FINAL_BRINGER, 2); // e3 (Destroyed -> destroy 1)
+            long d1 = Util.GetStringId(CardId.VARUDASN_FINAL_BRINGER, 1); // ใช้ทั้ง e1 (Negate) และ e2 (Battle Start destroy)
+            long d2 = Util.GetStringId(CardId.VARUDASN_FINAL_BRINGER, 2); // e3 (Destroyed -> destroy 1)
 
             Logger.DebugWriteLine("[Varudras] desc: " + desc + ", timing = " + CurrentTiming);
 
@@ -1945,7 +1945,7 @@ namespace WindBot.Game.AI.Decks
             if (CheckWhetherNegated()) return false;
             List<ClientCard> targetList = GetNormalEnemyTargetList(true, true, CardType.Monster);
             if (targetList.Count() == 0) return false;
-            int logDesc = (int)ActivateDescription;
+            long logDesc = (long)ActivateDescription;
             if (logDesc >= Util.GetStringId(CardId.UNCHAINDEDABOMINATION, 0))
             {
                 logDesc = Util.GetStringId(CardId.UNCHAINDEDABOMINATION, 0) - 10;
@@ -2338,7 +2338,7 @@ namespace WindBot.Game.AI.Decks
         {
             for (int i = 0; i < 5; i++)
             {
-                int sid = Util.GetStringId(CardId.NIGHTMARE_THRONE, i);
+                long sid = Util.GetStringId(CardId.NIGHTMARE_THRONE, i);
                 Logger.DebugWriteLine($"[THRONE] desc map i={i} strId={sid} match={(sid == incomingDesc)}");
             }
         }

@@ -1659,7 +1659,7 @@ namespace WindBot.Game.AI.Decks
             {
                 return false;
             }
-            List<int> checkTransformCode = new List<int>{
+            List<long> checkTransformCode = new List<long>{
                 Util.GetStringId(CardId.ExosisterElis, 1),
                 Util.GetStringId(CardId.ExosisterStella, 1),
                 Util.GetStringId(CardId.ExosisterIrene, 1),

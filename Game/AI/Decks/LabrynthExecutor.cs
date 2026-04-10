@@ -1365,7 +1365,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectPosition(cardId, positions);
         }
 
-        public override int OnSelectOption(IList<int> options)
+        public override int OnSelectOption(IList<long> options)
         {
             // override for cooclock
             if (options.Count() == 2 && options.Contains(1190) && options.Contains(1152))
@@ -3596,7 +3596,7 @@ namespace WindBot.Game.AI.Decks
             if (CheckWhetherNegated()) return false;
             List<ClientCard> targetList = GetNormalEnemyTargetList(true, true, CardType.Monster);
             if (targetList.Count() == 0) return false;
-            int logDesc = (int)ActivateDescription;
+            long logDesc = ActivateDescription;
             if (logDesc >= Util.GetStringId(CardId.UnchainedAbomination, 0))
             {
                 logDesc = Util.GetStringId(CardId.UnchainedAbomination, 0) - 10;

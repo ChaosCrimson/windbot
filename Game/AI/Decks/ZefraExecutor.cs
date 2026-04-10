@@ -1724,13 +1724,13 @@ namespace WindBot.Game.AI.Decks
             if (card.Attack <= 1000) return CardPosition.FaceUpDefence;
             return base.OnSelectPosition(cardId, positions);
         }
-        public override int OnSelectOption(IList<int> options)
+        public override int OnSelectOption(IList<long> options)
         {
             if (options.Contains(Util.GetStringId(CardId.MechaPhantomBeastAuroradon, 3)))
             {
                 if (opt_1) return options.IndexOf(Util.GetStringId(CardId.MechaPhantomBeastAuroradon, 3));
                 else if (opt_0) return 0;
-                return options[options.Count - 1];
+                return (int)options[options.Count - 1];
             }
             return base.OnSelectOption(options);
         }

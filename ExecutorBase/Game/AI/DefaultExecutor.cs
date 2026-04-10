@@ -7,7 +7,6 @@ namespace WindBot.Game.AI
 {
     public abstract class DefaultExecutor : Executor
     {
-    // Compatibility state used by newer IceYGO executors.
     protected readonly List<int> enemyResolvedEffectIdList = new List<int>();
     protected readonly List<int> infiniteImpermanenceNegatedColumns = new List<int>();
 

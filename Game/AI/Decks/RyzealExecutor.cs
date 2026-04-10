@@ -1,4 +1,4 @@
-﻿using YGOSharp.OCGWrapper;
+using YGOSharp.OCGWrapper;
 using YGOSharp.OCGWrapper.Enums;
 using System.Collections.Generic;
 using System.Linq;
@@ -1528,7 +1528,7 @@ namespace WindBot.Game.AI.Decks
             return !maybeTenpai;
         }
 
-        public override int OnSelectOption(IList<int> options)
+        public override int OnSelectOption(IList<long> options)
         {
             Logger.DebugWriteLine($"[OnSelectOption] Options count: {options?.Count ?? 0}");
             bool tripleCheck = false;
@@ -2449,7 +2449,7 @@ namespace WindBot.Game.AI.Decks
             return true;
         }
 
-        public int TripleTacticsTalentDecision(IList<int> options)
+        public int TripleTacticsTalentDecision(IList<long> options)
         {
             // gain control?
             bool dangerFlag = Enemy.GetMonsters().Any(c => c.IsFaceup() && !c.IsDisabled() && (c.IsFloodgate()

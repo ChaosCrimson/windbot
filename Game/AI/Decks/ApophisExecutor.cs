@@ -1172,7 +1172,7 @@ namespace WindBot.Game.AI.Decks
             return true;
         }
 
-        public override int OnSelectOption(IList<int> options)
+        public override int OnSelectOption(IList<long> options)
         {
             if (options.Contains(Util.GetStringId(_CardId.PotOfExtravagance, 1)))
             {
