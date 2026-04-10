@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WindBot;
@@ -253,7 +253,6 @@ namespace WindBot.Game.AI.Decks
         bool nsplan = false;
         bool nsBackupplan = false;
         bool NSDorMouse = false;
-        bool nsLanceaplan = false;
 
         int myTurnCount = 0;
         bool avoidLinkedZones = false;
@@ -1415,7 +1414,6 @@ namespace WindBot.Game.AI.Decks
             nsplan = false;
             nsBackupplan = false;
             NSDorMouse = false;
-            nsLanceaplan = false;
             base.OnNewTurn();
         }
         public override bool OnSelectYesNo(int desc)
@@ -2379,6 +2377,7 @@ namespace WindBot.Game.AI.Decks
         }
         private bool Mirror_Banish()
         {
+            Logger.DebugWriteLine($"[Mirror_Banish] t/f={DescIs(CardId.MalissInTheMirror, 1)}");
             if (DescIs(CardId.MalissInTheMirror, 1))
             {
                 ClientCard gy = PickMirrorGYTargetForSearch();
@@ -2394,6 +2393,7 @@ namespace WindBot.Game.AI.Decks
             if (CheckSpellWillBeNegate()) return false;
             if (CheckWhetherNegated()) return false;
             ClientCard cost = PickMirrorCostCandidate();
+            Logger.DebugWriteLine($"[Mirror_Banish] cost={cost?.Id}");
             if (cost == null) return false;
             foreach (ClientCard m in Enemy.GetMonsters())
             {
@@ -2409,8 +2409,8 @@ namespace WindBot.Game.AI.Decks
                 }
             }
             ClientCard LastChainCard = Util.GetLastChainCard();
-            if ((LastChainCard == null || LastChainCard.Controller != 1 || LastChainCard.Location != CardLocation.MonsterZone
-                || LastChainCard.IsDisabled() || LastChainCard.IsShouldNotBeTarget() || LastChainCard.IsShouldNotBeSpellTrapTarget()))
+            if (LastChainCard == null || LastChainCard.Controller != 1 || LastChainCard.Location != CardLocation.MonsterZone
+                || LastChainCard.IsDisabled() || LastChainCard.IsShouldNotBeTarget() || LastChainCard.IsShouldNotBeSpellTrapTarget())
                 return false;
 
             if (Card.Location == CardLocation.Hand)
@@ -3853,7 +3853,7 @@ namespace WindBot.Game.AI.Decks
         }
         bool IsMainFreeSeq(int seq)
         {
-            ClientCard[] ms = Bot.MonsterZone.GetMonsters();
+            var ms = Bot.MonsterZone.GetMonsters();
             bool occupied = ms.Any(m => m != null && m.Controller == 0 && m.Sequence == seq);
             return !occupied;
         }
@@ -4039,6 +4039,8 @@ namespace WindBot.Game.AI.Decks
         }
         private bool DescIs(int cardId, params int[] idx)
         {
+            Logger.DebugWriteLine($"[DescIs] ActivateDescription={ActivateDescription}");
+            Logger.DebugWriteLine($"[DescIs] StringID={Util.GetStringId(cardId, 1)}");
             if (ActivateDescription == -1) return true;
             foreach (int i in idx)
                 if (ActivateDescription == Util.GetStringId(cardId, i)) return true;
@@ -4170,7 +4172,6 @@ namespace WindBot.Game.AI.Decks
             if (Bot.HasInHand(CardId.MalissP_Dormouse) || Bot.HasInHand(CardId.MalissP_WhiteRabbit) || Bot.HasInHand(CardId.MalissP_ChessyCat) ||
                 Bot.HasInHand(CardId.MalissP_MarchHare) || Bot.HasInHand(CardId.MalissInUnderground) || Bot.HasInHand(CardId.TERRAFORMING) ||
                 Bot.HasInHand(CardId.GoldSarcophagus)) return false;
-            nsLanceaplan = true;
             return true;
         }
 

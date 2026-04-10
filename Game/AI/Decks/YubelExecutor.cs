@@ -246,7 +246,6 @@ namespace WindBot.Game.AI.Decks
         int _gateReviveTargetId = 0;      // จะชุบตัวไหน
         int _gateDiscardPreferredId = 0;  // จะทิ้งใบไหนเป็น cost
         bool _gateWantsRecycle = false;   // กำลังจะกดโหมดเก็บ Continuous
-        bool _spQuickMode = false;
         bool moonSummoned = false;
         bool requiemSummoned = false;
         bool thronePending = false;      // we're in a Throne activation flow
@@ -1042,7 +1041,6 @@ namespace WindBot.Game.AI.Decks
             _gateReviveTargetId = 0;
             _gateDiscardPreferredId = 0;
             _gateWantsRecycle = false;
-            _spQuickMode = false;
             
             base.OnNewTurn();
         }
@@ -2008,12 +2006,8 @@ namespace WindBot.Game.AI.Decks
 
         private bool HasValidRageLinkCandidate()
         {
-            bool hasSP = HasInExtra(CardId.SP_LITTLE_KNIGHT);
-            bool hasGorgon = HasInExtra(CardId.GORGONOFZIL);
-            hasGorgon = HasInExtra(CardId.GORGONOFZIL);
-
-            if (hasSP) return true;
-            if (hasGorgon && HasFreeEMZ()) return true;
+            if (HasInExtra(CardId.SP_LITTLE_KNIGHT)) return true;
+            if (HasInExtra(CardId.GORGONOFZIL) && HasFreeEMZ()) return true;
             return false;
         }
 
@@ -2360,6 +2354,6 @@ namespace WindBot.Game.AI.Decks
 
         #endregion
 
-        // ======================= END OF LIFE ====================
+        // ======================= END OF FILE ====================
     }
 }
