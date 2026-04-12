@@ -152,7 +152,7 @@ namespace WindBot.Game.AI.Decks
         const int SetcodeLabrynth = 0x17e;
         const int SetcodeTearlaments = 0x181;
         const int SetcodeHorus = 0x19d;
-        const int SetcodeRyzeal = 0x1be;
+        const int SetcodeRyzeal = 0x1b6;
         const int hintTimingMainEnd = 0x4;
         List<int> NotToNegateIdList = new List<int>
         {
@@ -228,7 +228,6 @@ namespace WindBot.Game.AI.Decks
 
         public bool CheckCanBeTargeted(ClientCard card, bool canBeTarget, CardType selfType)
         {
-            Logger.DebugWriteLine($"[CheckCanBeTargeted] card={card?.Id}, canBeTarget={canBeTarget}, selfType={selfType}");
             if (card == null) return true;
             if (canBeTarget)
             {
@@ -247,7 +246,6 @@ namespace WindBot.Game.AI.Decks
         /// <param name="id">Card's ID</param>
         public int CheckRemainInDeck(int id)
         {
-            Logger.DebugWriteLine($"[CheckRemainInDeck] Card {id}");
             for (int count = 1; count < 4; ++count)
             {
                 if (DeckCountTable[count].Contains(id)) {
@@ -259,7 +257,6 @@ namespace WindBot.Game.AI.Decks
 
         public int CheckRemainInDeck(params int[] ids)
         {
-            Logger.DebugWriteLine($"[CheckRemainInDeck] {ids.Length} cards");
             int sum = 0;
             foreach (int id in ids)
             {
@@ -287,7 +284,6 @@ namespace WindBot.Game.AI.Decks
         /// <param name="isCounter">check whether card itself is disabled.</param>
         public bool CheckWhetherNegated(bool disablecheck = true, bool toFieldCheck = false, CardType type = 0, bool ignore41 = false)
         {
-            Logger.DebugWriteLine($"[CheckWhetherNegated] Card={Card?.Id}, disablecheck={disablecheck}, toFieldCheck={toFieldCheck}, type={type}");
             bool isMonster = type == 0 && Card.IsMonster();
             isMonster |= ((int)type & (int)CardType.Monster) != 0;
             bool isSpellOrTrap = type == 0 && (Card.IsSpell() || Card.IsTrap());
@@ -322,7 +318,6 @@ namespace WindBot.Game.AI.Decks
         /// <returns></returns>
         public bool CheckSpellWillBeNegate(bool isCounter = false, ClientCard target = null)
         {
-            Logger.DebugWriteLine($"[CheckSpellWillBeNegate] IsCounter={isCounter}, Target={target?.Id}");
             // target default set
             if (target == null) target = Card;
             // won't negate if not on field
@@ -362,7 +357,6 @@ namespace WindBot.Game.AI.Decks
 
         public bool CheckCardShouldNegate(ClientCard card)
         {
-            Logger.DebugWriteLine($"[CheckCardShouldNegate] Card={card?.Id}");
             if (card == null) return false;
             if (card.IsMonster() && card.HasSetcode(SetcodeTimeLord) && Duel.Phase == DuelPhase.Standby) return false;
             if (NotToNegateIdList.Contains(card.Id)) return false;
@@ -380,8 +374,6 @@ namespace WindBot.Game.AI.Decks
 
         public bool CheckCardShouldNegate(ChainInfo chainInfo)
         {
-            Logger.DebugWriteLine($"[CheckCardShouldNegate] ChainInfo={chainInfo?.RelatedCard?.Id}");
-            Logger.DebugWriteLine($"[CheckCardShouldNegate/2] ChainInfo={chainInfo}");
             if (chainInfo == null) return false;
             ClientCard card = chainInfo.RelatedCard;
 
@@ -458,7 +450,6 @@ namespace WindBot.Game.AI.Decks
 
         public ClientCard GetProblematicEnemyMonster(int attack = 0, bool canBeTarget = false, bool ignoreCurrentDestroy = false, CardType selfType = 0)
         {
-            Logger.DebugWriteLine($"[GetProblematicEnemyMonster] Attack={attack}, CanBeTarget={canBeTarget}");
             ClientCard floodagateCard = Enemy.GetMonsters().Where(c => c?.Data != null && (ignoreCurrentDestroy || !currentDestroyCardList.Contains(c))
                 && c.IsFloodgate() && c.IsFaceup()
                 && CheckCanBeTargeted(c, canBeTarget, selfType)
@@ -532,7 +523,6 @@ namespace WindBot.Game.AI.Decks
         /// </summary>
         public List<ClientCard> GetDangerousCardinEnemyGrave(bool onlyMonster = false)
         {
-            Logger.DebugWriteLine($"[GetDangerousCardinEnemyGrave] OnlyMonster={onlyMonster}");
             List<ClientCard> result = Enemy.Graveyard.GetMatchingCards(card =>
                 (!onlyMonster || card.IsMonster()) && (card.HasSetcode(SetcodeOrcust) || card.HasSetcode(SetcodePhantomKnight) || card.HasSetcode(SetcodeHorus))).ToList();
             List<int> dangerMonsterIdList = new List<int>{
@@ -544,7 +534,6 @@ namespace WindBot.Game.AI.Decks
 
         public List<ClientCard> GetProblematicEnemyCardList(bool canBeTarget = false, bool ignoreSpells = false, CardType selfType = 0)
         {
-            Logger.DebugWriteLine($"[GetProblematicEnemyCardList] CanBeTarget={canBeTarget}, IgnoreSpells={ignoreSpells}");
             List<ClientCard> resultList = new List<ClientCard>();
 
             List<ClientCard> floodagateList = Enemy.MonsterZone.Where(c => c?.Data != null && !currentDestroyCardList.Contains(c)
@@ -589,7 +578,6 @@ namespace WindBot.Game.AI.Decks
 
         public List<ClientCard> GetNormalEnemyTargetList(bool canBeTarget = true, bool ignoreCurrentDestroy = false, CardType selfType = 0, bool forNegate = false)
         {
-            Logger.DebugWriteLine($"[GetNormalEnemyTargetList] CanBeTarget={canBeTarget}, IgnoreDestroy={ignoreCurrentDestroy}");
             List<ClientCard> targetList = GetProblematicEnemyCardList(canBeTarget, selfType: selfType);
             List<ClientCard> enemyMonster = Enemy.GetMonsters().Where(card => card.IsFaceup() && !targetList.Contains(card)
                 && (!ignoreCurrentDestroy || !currentDestroyCardList.Contains(card))
@@ -612,7 +600,6 @@ namespace WindBot.Game.AI.Decks
 
         public List<ClientCard> GetMonsterListForTargetNegate(bool canBeTarget = false, CardType selfType = 0)
         {
-            Logger.DebugWriteLine($"[GetMonsterListForTargetNegate] CanBeTarget={canBeTarget}");
             List<ClientCard> resultList = new List<ClientCard>();
             if (CheckWhetherNegated())
             {
@@ -655,13 +642,11 @@ namespace WindBot.Game.AI.Decks
         public int GetLevel4CountOnField()
         {
             int count = Bot.GetMonsters().Count(c => c.IsFaceup() && !c.HasType(CardType.Xyz | CardType.Link) && c.Level == 4);
-            Logger.DebugWriteLine($"[GetLevel4CountOnField] Count={count}");
             return count;
         }
 
         public int GetLevel4FinalCountOnField(bool checkSupport, out bool hasNode)
         {
-            Logger.DebugWriteLine($"[GetLevel4FinalCountOnField] CheckSupport={checkSupport}");
             // check whether have 4 monsters for material.
             // if not, skip the second xyz monster.
             int level4Count = GetLevel4CountOnField();
@@ -745,7 +730,6 @@ namespace WindBot.Game.AI.Decks
 
         public List<ClientCard> GetCostFromHandAndField(ClientCard exceptCard, bool sendNotNecessary)
         {
-            Logger.DebugWriteLine($"[GetCostFromHandAndField] ExceptCard={exceptCard?.Id}, SendNotNecessary={sendNotNecessary}");
             List<ClientCard> resultList = GetCostFromHandAndFieldFirst(exceptCard);
             if (!activatedCardIdList.Contains(CardId.TwinsOfTheEclipse + 1))
             {
@@ -865,7 +849,6 @@ namespace WindBot.Game.AI.Decks
 
         public int GetBotCurrentTotalAttack(List<ClientCard> exceptList = null)
         {
-            Logger.DebugWriteLine($"[GetBotCurrentTotalAttack] ExceptList={exceptList?.Count ?? 0}");
             if (Util.IsTurn1OrMain2() || botSolvedCardIdList.Contains(_CardId.EvilswarmExcitonKnight)) return 0;
             int result = 0;
             foreach (ClientCard monster in Bot.GetMonsters())
@@ -892,7 +875,6 @@ namespace WindBot.Game.AI.Decks
 
         public override BattlePhaseAction OnBattle(IList<ClientCard> attackers, IList<ClientCard> defenders)
         {
-            Logger.DebugWriteLine($"[OnBattle] Attackers: {attackers?.Count ?? 0}, Defenders: {defenders?.Count ?? 0}");
             if (attackers.Count() > 0 && defenders.Count() > 0)
             {
                 List<ClientCard> sortedAttacker = attackers.OrderBy(card => card.Attack).ToList();
@@ -917,7 +899,7 @@ namespace WindBot.Game.AI.Decks
 
         public override ClientCard OnSelectAttacker(IList<ClientCard> attackers, IList<ClientCard> defenders)
         {
-            Logger.DebugWriteLine($"[OnSelectAttacker] Attackers: {attackers?.Count ?? 0}, Defenders: {defenders?.Count ?? 0}");
+
             ClientCard twin = attackers.FirstOrDefault(c => c.IsCode(CardId.TwinsOfTheEclipse) && !c.IsDisabled());
             if (twin != null)
             {
@@ -931,7 +913,6 @@ namespace WindBot.Game.AI.Decks
 
         public override void OnSelectChain(IList<ClientCard> cards)
         {
-            Logger.DebugWriteLine($"[OnSelectChain] Cards available: {cards?.Count ?? 0}");
             if (cards != null && cards.Count() > 0)
             {
                 currentCanActivateEffect.Clear();
@@ -946,7 +927,6 @@ namespace WindBot.Game.AI.Decks
             ClientCard solvingCard = currentSolvingChain?.RelatedCard;
             string cardOptionsText =   cards == null ? "null": string.Join(" | ", cards.Select(c => c == null
                     ? "null" : $"Id={c.Id}, Name={(c.Name ?? "Unknown")}, Loc={c.Location},"));
-            Logger.DebugWriteLine($"[OnSelectCard] cards=[{cardOptionsText}]");
 
             int solvingPlayer = currentSolvingChain?.ActivatePlayer ?? Duel.LastChainPlayer;
             if (currentSolvingChain != null)
@@ -1125,11 +1105,8 @@ namespace WindBot.Game.AI.Decks
 
                         if (solvingCard.IsCode(CardId.RyzealDuodrive))
                         {
-                            Logger.DebugWriteLine("[RyzealDuodrive:AddToHand] candidates=" + string.Join(",", cards.Select(c => c == null ? "null" : c.Id.ToString())));
-
                             // search spells
                             bool spellNegated = CheckWhetherNegated(true, true, CardType.Spell);
-                            Logger.DebugWriteLine("[RyzealDuodrive:AddToHand] spellNegated=" + spellNegated.ToString());
                             if (!spellNegated)
                             {
                                 ClientCard cross = cards.FirstOrDefault(c => c.IsCode(CardId.RyzealCross));
@@ -1184,14 +1161,12 @@ namespace WindBot.Game.AI.Decks
                                     ClientCard target = cards.FirstOrDefault(c => c.IsCode(id));
                                     if (target != null)
                                     {
-                                        Logger.DebugWriteLine("[RyzealDuodrive:AddToHand] fallback pick=" + id.ToString());
                                         return Util.CheckSelectCount(new List<ClientCard> { target }, cards, min, max);
                                     }
                                 }
                             }
 
                             // random search
-                            Logger.DebugWriteLine("[RyzealDuodrive:AddToHand] fallback random pick");
                             return Util.CheckSelectCount(ShuffleList(cards.ToList()), cards, min, max);
                         }
                     }
@@ -1530,7 +1505,6 @@ namespace WindBot.Game.AI.Decks
 
         public override int OnSelectOption(IList<long> options)
         {
-            Logger.DebugWriteLine($"[OnSelectOption] Options count: {options?.Count ?? 0}");
             bool tripleCheck = false;
             for (int opt = 0; opt < 3; ++ opt)
             {
@@ -1605,7 +1579,6 @@ namespace WindBot.Game.AI.Decks
 
         public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
         {
-            Logger.DebugWriteLine($"[OnSelectPlace] CardId={cardId}, Player={player}, Location={location}, Available={available}");
             if (player == 0 && location == CardLocation.MonsterZone)
             {
                 List<int> zoneIdList = ShuffleList(new List<int> { 5, 6 });
@@ -1636,7 +1609,6 @@ namespace WindBot.Game.AI.Decks
 
         public override CardPosition OnSelectPosition(int cardId, IList<CardPosition> positions)
         {
-            Logger.DebugWriteLine($"[OnSelectPosition] CardId={cardId}, Positions available: {positions?.Count ?? 0}");
             if (cardId == _CardId.Number41BagooskatheTerriblyTiredTapir && (Util.IsTurn1OrMain2() || Duel.Player == 1))
             {
                 return CardPosition.FaceUpDefence;
@@ -1682,7 +1654,6 @@ namespace WindBot.Game.AI.Decks
 
         public override void OnNewTurn()
         {
-            Logger.DebugWriteLine($"[OnNewTurn] Turn {Duel.Turn}, Phase {Duel.Phase}");
             if (Duel.Turn <= 1)
             {
                 dimensionShifterCount = 0;
@@ -1717,7 +1688,6 @@ namespace WindBot.Game.AI.Decks
 
         public override void OnChaining(int player, ClientCard card)
         {
-            Logger.DebugWriteLine($"[OnChaining] Player {player}, Card {card?.Id}");
             Duel.LastChainTargets.Clear();
             if (card == null) return;
             
@@ -1760,7 +1730,6 @@ namespace WindBot.Game.AI.Decks
 
         public override void OnChainSolved(int chainIndex)
         {
-            Logger.DebugWriteLine($"[OnChainSolved] Chain index {chainIndex}");
             botSolvingCross = false;
             ChainInfo currentChain = Duel.GetCurrentSolvingChainInfo();
             if (currentChain != null && !Duel.IsCurrentSolvingChainNegated())
@@ -1800,7 +1769,6 @@ namespace WindBot.Game.AI.Decks
 
         public override void OnChainEnd()
         {
-            Logger.DebugWriteLine("[OnChainEnd] Chain ended");
             for (int idx = cannotDestroyCardList.Count - 1; idx >= 0; idx--)
             {
                 ClientCard checkTarget = cannotDestroyCardList[idx];
@@ -1850,7 +1818,6 @@ namespace WindBot.Game.AI.Decks
 
         public override void OnMove(ClientCard card, int previousControler, int previousLocation, int currentControler, int currentLocation)
         {
-            Logger.DebugWriteLine($"[OnMove] Card {card?.Id}, from {previousControler}:{previousLocation} to {currentControler}:{currentLocation}");
             if (card != null)
             {
                 if (previousControler == 1)
@@ -1913,7 +1880,6 @@ namespace WindBot.Game.AI.Decks
         /// <param name="avoidList">Whether need to avoid set in this place</param>
         public void SelectSTPlace(ClientCard card = null, bool avoidImpermanence = false, List<int> avoidList = null)
         {
-            Logger.DebugWriteLine($"[SelectSTPlace] Card={card?.Id}, AvoidImpermanence={avoidImpermanence}");
             if (card == null) card = Card;
             List<int> list = new List<int>();
             for (int seq = 0; seq < 5; ++seq)
@@ -2944,7 +2910,6 @@ namespace WindBot.Game.AI.Decks
 
         public bool RyzealCrossActivateRecycleLater()
         {
-            Logger.DebugWriteLine("[RyzealCrossActivateRecycleLater] Cross activate recycle later check");
             if (CheckWhetherNegated(true) || !(Card.Location == CardLocation.SpellZone && Card.IsFaceup())) return false;
             if (ActivateDescription == Util.GetStringId(CardId.RyzealCross, 1))
             {
@@ -3009,7 +2974,6 @@ namespace WindBot.Game.AI.Decks
 
         public bool InfiniteImpermanenceActivate()
         {
-            Logger.DebugWriteLine("[InfiniteImpermanenceActivate] Infinite Impermanence activate");
             if (CheckWhetherNegated()) return false;
 
             ClientCard LastChainCard = Util.GetLastChainCard();
@@ -3231,7 +3195,6 @@ namespace WindBot.Game.AI.Decks
 
             int level4Count = GetLevel4FinalCountOnField(true, out _);
             bool result = SecondXyzSummonInner();
-            Logger.DebugWriteLine("Second Xyz Count: " + level4Count.ToString());
             return result;
         }
 
@@ -3247,7 +3210,7 @@ namespace WindBot.Game.AI.Decks
             // check whether have 4 monsters for material.
             // if not, skip the second xyz monster.
             int level4Count = GetLevel4FinalCountOnField(true, out bool hasNode);
-            if (level4Count <= 2) return false;
+            if (level4Count <= 4) return false;
 
             // select which monster to summon
             List<ClientCard> materialList = GetLevel4OnField(null);
@@ -3485,7 +3448,6 @@ namespace WindBot.Game.AI.Decks
 
             int level4Count = GetLevel4FinalCountOnField(false, out _);
             bool result = FinalXyzSummonInner();
-            Logger.DebugWriteLine("Final Xyz Count: " + level4Count.ToString());
 
             return result;
         }
@@ -3499,7 +3461,6 @@ namespace WindBot.Game.AI.Decks
             }
 
             int level4Count = GetLevel4FinalCountOnField(false, out _);
-            Logger.DebugWriteLine($"[FinalXyzSummonInner] Level 4 Count: " + level4Count.ToString());
             if (level4Count < 2) return false;
 
             // No.41
@@ -3850,7 +3811,6 @@ namespace WindBot.Game.AI.Decks
                 }
 
                 // although cannot find target, still should activate.
-                Logger.DebugWriteLine("** Twins of The Eclipse: although cannot find target, still should activate.");
                 return true;
             }
 
@@ -3859,7 +3819,6 @@ namespace WindBot.Game.AI.Decks
 
         public ClientCard TwinsOfTheEclipseRebornTarget(List<ClientCard> targetList)
         {
-            Logger.DebugWriteLine($"[TwinsOfTheEclipseRebornTarget] TargetList={targetList?.Count ?? 0}");
             if (targetList == null)
             {
                 targetList = Bot.Graveyard.Where(c => c.HasType(CardType.Xyz) && c.IsCanRevive()).ToList();
@@ -3901,7 +3860,6 @@ namespace WindBot.Game.AI.Decks
 
         public List<ClientCard> CanDestroyList(bool ignoreCurrentDestroy = false)
         {
-            Logger.DebugWriteLine($"[CanDestroyList] IgnoreCurrentDestroy={ignoreCurrentDestroy}");
             List<ClientCard> destroyTargetList = GetNormalEnemyTargetList(true, ignoreCurrentDestroy, CardType.Monster).Except(currentNegateCardList).ToList();
 
             List<int> cannotDestroyList = new List<int>(NotToDestroySpellTrap);
