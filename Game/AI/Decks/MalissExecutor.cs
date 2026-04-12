@@ -75,7 +75,7 @@ namespace WindBot.Game.AI.Decks
             public const int GhostMournerMoonlitChill = 52038441;
             public const int NibiruThePrimalBeing = 27204311;
         }
-        const int SetcodeMaliss = 0x1bf;
+        const int SetcodeMaliss = 0x1b9;
         const int SetcodeTimeLord = 0x4a;
         const int SetcodePhantom = 0xdb;
         const int SetcodeOrcust = 0x11b;
@@ -455,7 +455,7 @@ namespace WindBot.Game.AI.Decks
 
         private bool IsMaliss(ClientCard c)
         {
-            return c.HasSetcode(0x1bf);
+            return c.HasSetcode(SetcodeMaliss);
         }
 
         private int ScoreForBanishedMaliss(ClientCard c)
@@ -2203,7 +2203,7 @@ namespace WindBot.Game.AI.Decks
 
             if (revived == null)
                 revived = Bot.MonsterZone.FirstOrDefault(c =>
-                    c != null && c.IsFaceup() && c.HasSetcode(0x1bf) && c != splash && !c.HasType(CardType.Link));
+                    c != null && c.IsFaceup() && c.HasSetcode(SetcodeMaliss) && c != splash && !c.HasType(CardType.Link));
 
             if (revived == null) return new List<ClientCard>();
             return new List<ClientCard> { splash, revived };
@@ -2377,8 +2377,7 @@ namespace WindBot.Game.AI.Decks
         }
         private bool Mirror_Banish()
         {
-            Logger.DebugWriteLine($"[Mirror_Banish] t/f={DescIs(CardId.MalissInTheMirror, 1)}");
-            if (DescIs(CardId.MalissInTheMirror, 1))
+            if (Card.Location == CardLocation.Removed)
             {
                 ClientCard gy = PickMirrorGYTargetForSearch();
                 if (gy == null) return false;
@@ -2393,7 +2392,6 @@ namespace WindBot.Game.AI.Decks
             if (CheckSpellWillBeNegate()) return false;
             if (CheckWhetherNegated()) return false;
             ClientCard cost = PickMirrorCostCandidate();
-            Logger.DebugWriteLine($"[Mirror_Banish] cost={cost?.Id}");
             if (cost == null) return false;
             foreach (ClientCard m in Enemy.GetMonsters())
             {
@@ -2797,7 +2795,7 @@ namespace WindBot.Game.AI.Decks
             }
             return false;
         }
-        private bool IsMalissMonster(ClientCard c) => c != null && c.IsMonster() && c.HasSetcode(0x1bf);
+        private bool IsMalissMonster(ClientCard c) => c != null && c.IsMonster() && c.HasSetcode(SetcodeMaliss);
         private bool CanMakeLinkNWithFlexibleTwo(ClientCard a, ClientCard b, int target)
         {
             int a1 = 1, aL = (a != null && a.HasType(CardType.Link)) ? Math.Max(1, a.LinkCount) : 1;
@@ -2873,7 +2871,7 @@ namespace WindBot.Game.AI.Decks
 
             if (Duel.Player == 0)
             {
-                List<ClientCard> gy = Bot.Graveyard.GetMatchingCards(c => c != null && c.HasSetcode(0x1bf) && c != Card).ToList();
+                List<ClientCard> gy = Bot.Graveyard.GetMatchingCards(c => c != null && c.HasSetcode(SetcodeMaliss) && c != Card).ToList();
 
                 Func<IEnumerable<ClientCard>, ClientCard> pickP1 = (src) =>
                 {
@@ -3311,8 +3309,8 @@ namespace WindBot.Game.AI.Decks
         }
         private bool Step_LinkSummon_HeartsCrypter()
         {
-            if((Bot.HasInMonstersZone(CardId.MalissQ_WhiteBinder) && Bot.HasInMonstersZone(CardId.MalissQ_RedRansom) &&
-                Bot.HasInMonstersZone(CardId.Apollousa) && Bot.GetMonsterCount() < 5)) return false;
+            if(Bot.HasInMonstersZone(CardId.MalissQ_WhiteBinder) && Bot.HasInMonstersZone(CardId.MalissQ_RedRansom) &&
+                Bot.HasInMonstersZone(CardId.Apollousa) && Bot.GetMonsterCount() < 5) return false;
             List<ClientCard> cand = Bot.GetMonsters()
                           .Where(c => c != null && c.IsFaceup() && c.HasType(CardType.Effect))
                           .ToList();
@@ -3385,7 +3383,7 @@ namespace WindBot.Game.AI.Decks
         private List<ClientCard> GetBanishedMaliss()
         {
             return Bot.Banished.GetMatchingCards(c =>
-                c != null && c.IsFaceup() && c.HasSetcode(0x1bf)).ToList();
+                c != null && c.IsFaceup() && c.HasSetcode(SetcodeMaliss)).ToList();
         }
         private ClientCard PickBanishedMalissForHC(List<ClientCard> cand)
         {
@@ -3417,7 +3415,7 @@ namespace WindBot.Game.AI.Decks
         }
         private bool HasMalissLinkFaceup()
         {
-            return Bot.GetMonsters().Any(c => c != null && c.IsFaceup() && c.HasSetcode(0x1bf) && c.HasType(CardType.Link));
+            return Bot.GetMonsters().Any(c => c != null && c.IsFaceup() && c.HasSetcode(SetcodeMaliss) && c.HasType(CardType.Link));
         }
         private bool CanReachAlliedNow()
         {
@@ -4037,15 +4035,6 @@ namespace WindBot.Game.AI.Decks
             if (c.IsCode(CardId.MalissP_MarchHare) && ActiveMarchHare) return true;
             return false;
         }
-        private bool DescIs(int cardId, params int[] idx)
-        {
-            Logger.DebugWriteLine($"[DescIs] ActivateDescription={ActivateDescription}");
-            Logger.DebugWriteLine($"[DescIs] StringID={Util.GetStringId(cardId, 1)}");
-            if (ActivateDescription == -1) return true;
-            foreach (int i in idx)
-                if (ActivateDescription == Util.GetStringId(cardId, i)) return true;
-            return false;
-        }
 
         private ClientCard PickMirrorCostCandidate()
         {
@@ -4062,7 +4051,7 @@ namespace WindBot.Game.AI.Decks
             }
 
             ClientCard fieldP = Bot.GetMonsters()
-                .Where(c => c != null && c.HasSetcode(0x1bf) && !c.HasType(CardType.Link))
+                .Where(c => c != null && c.HasSetcode(SetcodeMaliss) && !c.HasType(CardType.Link))
                 .OrderBy(c => c.Attack).FirstOrDefault();
             if (fieldP != null) return fieldP;
 
@@ -4070,7 +4059,7 @@ namespace WindBot.Game.AI.Decks
                                 CardId.MalissQ_HeartsCrypter, CardId.MalissQ_WhiteBinder, CardId.MalissQ_RedRansom
                             };
             ClientCard weakLink = Bot.GetMonsters()
-                .Where(c => c != null && c.HasSetcode(0x1bf) && c.HasType(CardType.Link) && !avoid.Contains(c.Id))
+                .Where(c => c != null && c.HasSetcode(SetcodeMaliss) && c.HasType(CardType.Link) && !avoid.Contains(c.Id))
                 .OrderBy(c => c.Attack).FirstOrDefault();
             return weakLink;
         }
