@@ -15,7 +15,7 @@
         "name": "Apophis",
         "deck": "Apophis",
         "difficulty": 3,
-        "masterRules": [ 5 ]
+        "masterRules": [ 4, 5 ]
     },
     {
         "name": "Blue-Eyes",
@@ -39,7 +39,7 @@
         "name": "Branded",
         "deck": "Albaz",
         "difficulty": 3,
-        "masterRules": [ 5 ]
+        "masterRules": [ 3, 5 ]
     },
     {
         "name": "Burn",
@@ -69,7 +69,7 @@
         "name": "Dogmatika",
         "deck": "Dogmatika",
         "difficulty": 3,
-        "masterRules": [ 5 ]
+        "masterRules": [ 4, 5 ]
     },
     {
         "name": "Dragma",
@@ -135,7 +135,7 @@
         "name": "Labrynth",
         "deck": "Labrynth",
         "difficulty": 3,
-        "masterRules": [ 5 ]
+        "masterRules": [ 4, 5 ]
     },
     {
         "name": "Lightsworn Shaddoll Dino",
@@ -231,7 +231,7 @@
         "name": "Superheavy Samurai",
         "deck": "SuperheavySamurai",
         "difficulty": 3,
-        "masterRules": [ 5 ]
+        "masterRules": [ 4, 5 ]
     },
     {
         "name": "Swordsoul",
