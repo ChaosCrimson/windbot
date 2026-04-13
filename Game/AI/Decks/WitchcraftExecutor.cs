@@ -1,4 +1,4 @@
-﻿using YGOSharp.OCGWrapper;
+using YGOSharp.OCGWrapper;
 using YGOSharp.OCGWrapper.Enums;
 using System.Collections.Generic;
 using WindBot;
@@ -386,7 +386,7 @@ namespace WindBot.Game.AI.Decks
         }
 
         // position select
-        public override CardPosition OnSelectPosition(long cardId, IList<CardPosition> positions)
+        public override CardPosition OnSelectPosition(int cardId, IList<CardPosition> positions)
         {
             NamedCard Data = NamedCard.Get(cardId);
             if (Data == null)

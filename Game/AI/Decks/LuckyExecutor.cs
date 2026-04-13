@@ -204,7 +204,7 @@ namespace WindBot.Game.AI.Decks
             return Program.Rand.Next(options.Count);
         }
 
-        public override CardPosition OnSelectPosition(long cardId, IList<CardPosition> positions)
+        public override CardPosition OnSelectPosition(int cardId, IList<CardPosition> positions)
         {
             YGOSharp.OCGWrapper.NamedCard cardData = YGOSharp.OCGWrapper.NamedCard.Get(cardId);
             if (cardData != null)
