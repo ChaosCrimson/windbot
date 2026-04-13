@@ -615,7 +615,7 @@ namespace WindBot.Game.AI.Decks
             return true;
         }
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {
             ClientCard currentSolvingChain = Duel.GetCurrentSolvingChainCard();
             if (currentSolvingChain != null)
@@ -2184,7 +2184,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectCard(cards, min, max, hint, cancelable);
         }
 
-        public override int OnSelectOption(IList<int> options)
+        public override int OnSelectOption(IList<long> options)
         {
             ChainInfo currentSolvingChain = Duel.GetCurrentSolvingChainInfo();
             if (currentSolvingChain != null)
@@ -2244,7 +2244,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectOption(options);
         }
 
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             ChainInfo currentSovingChain = Duel.GetCurrentSolvingChainInfo();
             if (currentSovingChain != null && currentSovingChain.ActivatePlayer == 0 && currentSovingChain.IsCode(CardId.SprindTheIrondashDragon))
@@ -2269,7 +2269,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectPlace(cardId, player, location, available);
         }
 
-        public override bool OnSelectYesNo(int desc)
+        public override bool OnSelectYesNo(long desc)
         {
             if (desc == Util.GetStringId(CardId.BrandedInHighSpirits, 2))
             {

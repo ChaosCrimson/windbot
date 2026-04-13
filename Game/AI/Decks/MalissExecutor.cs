@@ -418,7 +418,7 @@ namespace WindBot.Game.AI.Decks
             mask &= 0x1F;
             return mask;
         }
-        private bool IsPawnId(int id)
+        private bool IsPawnId(long id)
         {
             return id == CardId.MalissP_Dormouse
                 || id == CardId.MalissP_WhiteRabbit
@@ -471,7 +471,7 @@ namespace WindBot.Game.AI.Decks
             return 50;
         }
 
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             if (player == 0 && location == CardLocation.MonsterZone)
             {
@@ -1416,7 +1416,7 @@ namespace WindBot.Game.AI.Decks
             NSDorMouse = false;
             base.OnNewTurn();
         }
-        public override bool OnSelectYesNo(int desc)
+        public override bool OnSelectYesNo(long desc)
         {
             if (desc == Util.GetStringId(CardId.MalissQ_WhiteBinder, 0))
             {
@@ -1427,7 +1427,7 @@ namespace WindBot.Game.AI.Decks
         }
         private bool DontSelfNG() { return Duel.LastChainPlayer != 0; }
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {
             ClientCard solving = Duel.GetCurrentSolvingChainCard();
             if (cards != null && cards.Count > 0 && solving != null)

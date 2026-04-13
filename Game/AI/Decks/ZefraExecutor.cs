@@ -1735,7 +1735,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectOption(options);
         }
 
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             NamedCard card = NamedCard.Get(cardId);
             if (player == 0)
@@ -1789,7 +1789,7 @@ namespace WindBot.Game.AI.Decks
             return Func.CheckSelectCount(Util, result, cards, max, max);
         }
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {
             if (AI.HaveSelectedCards()) return null;
             List<int> ids = func.GetSelectCardIdList();

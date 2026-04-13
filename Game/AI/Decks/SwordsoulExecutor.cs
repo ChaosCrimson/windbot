@@ -591,7 +591,7 @@ namespace WindBot.Game.AI.Decks
             return true;
         }
 
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             // Geomathmech Final Sigma always place on extra monster zone
             if (cardId == CardId.GeomathmechFinalSigma && location == CardLocation.MonsterZone)
@@ -642,7 +642,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectPosition(cardId, positions);
         }
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {   
             if (Util.ChainContainPlayer(1) && hint == HintMsg.Remove && Duel.Phase > DuelPhase.Main1 && Duel.Phase < DuelPhase.Main2)
             {

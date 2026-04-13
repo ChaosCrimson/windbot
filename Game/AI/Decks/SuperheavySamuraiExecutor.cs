@@ -1,4 +1,4 @@
-﻿using YGOSharp.OCGWrapper;
+using YGOSharp.OCGWrapper;
 using YGOSharp.OCGWrapper.Enums;
 using System.Collections.Generic;
 using System.Linq;
@@ -236,7 +236,7 @@ namespace WindBot.Game.AI.Decks
             }
             return 0;
         }
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             if (player == 0 && location == CardLocation.MonsterZone)
             {
@@ -282,7 +282,7 @@ namespace WindBot.Game.AI.Decks
             }
             return base.OnSelectPlace(cardId, player, location, available);
         }
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {
             if (AI.HaveSelectedCards()) return null;
             if (p_summoning || ((Card == Bot.SpellZone[0] || Card == Bot.SpellZone[4]) && hint == HintMsg.SpSummon &&

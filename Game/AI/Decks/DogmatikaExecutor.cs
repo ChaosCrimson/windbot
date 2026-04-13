@@ -804,7 +804,7 @@ namespace WindBot.Game.AI.Decks
             return true;
         }
 
-        public override int OnSelectOption(IList<int> options)
+        public override int OnSelectOption(IList<long> options)
         {
             // override for iris
             List<long> checkOptionList = new List<long>{Util.GetStringId(CardId.ThesIrisSwordsoul, 4), Util.GetStringId(CardId.ThesIrisSwordsoul, 2)};
@@ -856,7 +856,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectPosition(cardId, positions);
         }
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {   
             if (Util.ChainContainPlayer(1) && hint == HintMsg.Remove && Duel.Phase > DuelPhase.Main1 && Duel.Phase < DuelPhase.Main2)
             {

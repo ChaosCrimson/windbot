@@ -1,4 +1,4 @@
-﻿using YGOSharp.OCGWrapper;
+using YGOSharp.OCGWrapper;
 using YGOSharp.OCGWrapper.Enums;
 using System.Collections.Generic;
 using System.Linq;
@@ -236,7 +236,7 @@ namespace WindBot.Game.AI.Decks
                 Count.Dimension_Shifter = 0;
             Count.Oppo.Clear();
         }
-        public override bool OnSelectYesNo(int desc)
+        public override bool OnSelectYesNo(long desc)
         {
             if (desc == Util.GetStringId(CardId.Maliss_White_Binder, 3))
                 return true;
@@ -244,14 +244,14 @@ namespace WindBot.Game.AI.Decks
                 return Enemy.GetMonsters().Count(i => !i.IsShouldNotBeTarget()) + Enemy.GetSpells().Count(i => !i.IsShouldNotBeTarget() && (i.HasType(CardType.Field | CardType.Continuous | CardType.Equip) || i.IsFacedown())) > 0;
             return base.OnSelectYesNo(desc);
         }
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             if (player == 0 && location == CardLocation.MonsterZone)
             {
-                if (new List<int>{CardId.Maliss_Red_Ransom, CardId.Splash_Mage}.Contains(cardId))
+                if (new List<long>{CardId.Maliss_Red_Ransom, CardId.Splash_Mage}.Contains(cardId))
                     AI.SendCustomChat(0);
 
-                if (new List<int>{CardId.Cyberse_Wicckid, CardId.Allied_Code_Talker_Ignister}.Contains(cardId))
+                if (new List<long>{CardId.Cyberse_Wicckid, CardId.Allied_Code_Talker_Ignister}.Contains(cardId))
                 {
                     if ((Zones.z6 & available) > 0 && (Bot.MonsterZone[3] == null || Bot.MonsterZone[4] == null)) return Zones.z6;
                     if ((Zones.z5 & available) > 0 && (Bot.MonsterZone[0] == null || Bot.MonsterZone[1] == null)) return Zones.z5;
@@ -319,7 +319,7 @@ namespace WindBot.Game.AI.Decks
             }
             return base.OnSelectPlace(cardId, player, location, available);
         }
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {
             if (AI.HaveSelectedCards()) return null;
             ClientCard card = Duel.GetCurrentSolvingChainCard();

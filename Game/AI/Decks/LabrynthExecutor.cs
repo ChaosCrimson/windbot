@@ -651,7 +651,7 @@ namespace WindBot.Game.AI.Decks
             return 1;
         }
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {
             ClientCard currentSolvingChain = Duel.GetCurrentSolvingChainCard();
             if (currentSolvingChain != null)
@@ -1296,7 +1296,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectMonsterSummonOrSet(card);
         }
 
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             if (player == 0 && location == CardLocation.MonsterZone)
             {
@@ -1574,7 +1574,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectOption(options);
         }
 
-        public override bool OnSelectYesNo(int desc)
+        public override bool OnSelectYesNo(long desc)
         {
             if (desc == 96)
             {

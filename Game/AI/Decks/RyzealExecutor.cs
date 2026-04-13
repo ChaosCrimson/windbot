@@ -921,7 +921,7 @@ namespace WindBot.Game.AI.Decks
             base.OnSelectChain(cards);
         }
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {
             ChainInfo currentSolvingChain = Duel.GetCurrentSolvingChainInfo();
             ClientCard solvingCard = currentSolvingChain?.RelatedCard;
@@ -1577,7 +1577,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectOption(options);
         }
 
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             if (player == 0 && location == CardLocation.MonsterZone)
             {
@@ -1596,7 +1596,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectPlace(cardId, player, location, available);
         }
 
-        public override bool OnSelectYesNo(int desc)
+        public override bool OnSelectYesNo(long desc)
         {
             if (desc == Util.GetStringId(CardId.RyzealPlugIn, 1))
             {

@@ -64,7 +64,7 @@ namespace WindBot.Game
             return ActivateId == id || Math.Abs(ActivateAlias - ActivateId) <= 20 && ActivateAlias == id;
         }
 
-        public bool IsCode(int id)
+        public bool IsCode(long id)
         {
             return RelatedCard != null && RelatedCard.IsCode(id);
         }

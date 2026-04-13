@@ -859,7 +859,7 @@ namespace WindBot.Game.AI.Decks
         /// <summary>
         /// override for exosister's transform
         /// </summary>
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {
             bool beginTransformCheck = false;
             // transform for main monster
@@ -1014,7 +1014,7 @@ namespace WindBot.Game.AI.Decks
         /// <summary>
         /// override for magnifica's spsummon
         /// </summary>
-        public override bool OnSelectYesNo(int desc)
+        public override bool OnSelectYesNo(long desc)
         {
             // magnifica spsummon
             if (desc == Util.GetStringId(CardId.ExosistersMagnifica, 2))
@@ -1033,7 +1033,7 @@ namespace WindBot.Game.AI.Decks
         /// <summary>
         /// override for returnia's option
         /// </summary>
-        public override int OnSelectOption(IList<int> options)
+        public override int OnSelectOption(IList<long> options)
         {
             // check retunia
             int spSummonOption = -1;
@@ -1041,7 +1041,7 @@ namespace WindBot.Game.AI.Decks
             int doNothingOption = -1;
             for (int idx = 0; idx < options.Count(); ++ idx)
             {
-                int option = options[idx];
+                long option = options[idx];
                 if (option == Util.GetStringId(CardId.ExosisterReturnia, 0))
                 {
                     spSummonOption = idx;
@@ -1089,7 +1089,7 @@ namespace WindBot.Game.AI.Decks
             int potBanish3Option = -1;
             for (int idx = 0; idx < options.Count(); ++idx)
             {
-                int option = options[idx];
+                long option = options[idx];
                 if (option == Util.GetStringId(CardId.PotofExtravagance, 0))
                 {
                     potBanish3Option = idx;

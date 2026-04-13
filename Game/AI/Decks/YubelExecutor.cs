@@ -342,7 +342,7 @@ namespace WindBot.Game.AI.Decks
             return false;
         }
 
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             if (player == 0 && location == CardLocation.MonsterZone && cardId == CardId.UNCHAINED_SOUL_OF_RAGE)
             {
@@ -2015,7 +2015,7 @@ namespace WindBot.Game.AI.Decks
 
         // ======================= On Select Somethings ====================
         #region Work Space #2
-        private bool YesNoFor(int desc, int cardId, int idx)
+        private bool YesNoFor(long desc, long cardId, int idx)
         {
             ChainInfo info = Duel.GetCurrentSolvingChainInfo();
             ClientCard card = Duel.GetCurrentSolvingChainCard();
@@ -2023,7 +2023,7 @@ namespace WindBot.Game.AI.Decks
             return desc == Util.GetStringId(cardId, idx)
                    && ((info != null && info.IsCode(cardId)) || (card != null && card.IsCode(cardId)));
         }
-        public override bool OnSelectYesNo(int desc)
+        public override bool OnSelectYesNo(long desc)
         {
             Logger.DebugWriteLine($"[DEBUG] OnSelectYesNo: desc={desc}");
             ChainInfo info = Duel.GetCurrentSolvingChainInfo();
@@ -2098,7 +2098,7 @@ namespace WindBot.Game.AI.Decks
         }
 
         // Safety net for any selection the specific executors didn't pre-select
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {
             Logger.DebugWriteLine($"[DEBUG] OnSelectCard: hint={hint} (0x{hint:X}), min={min}, max={max}, cancelable={cancelable}, candidates={cards?.Count ?? 0}");
             
@@ -2334,7 +2334,7 @@ namespace WindBot.Game.AI.Decks
             }
         }
 
-        private void DebugThroneDescMap(int incomingDesc)
+        private void DebugThroneDescMap(long incomingDesc)
         {
             for (int i = 0; i < 5; i++)
             {
