@@ -6,26 +6,6 @@ namespace WindBot.Game.AI
 {
     public class AIUtil
     {
-        public struct StringId
-        {
-            private readonly long _value;
-
-            public StringId(long value)
-            {
-                _value = value;
-            }
-
-            public static implicit operator long(StringId value)
-            {
-                return value._value;
-            }
-
-            public static implicit operator int(StringId value)
-            {
-                return unchecked((int)value._value);
-            }
-        }
-
         public Duel Duel { get; private set; }
         public ClientField Bot { get; private set; }
         public ClientField Enemy { get; private set; }
