@@ -21,14 +21,14 @@ namespace WindBot.Game
         public ulong ActivateAttack { get; private set; }
         public ulong ActivateDefense { get; private set; }
         public bool IsSpecialSummoned { get; private set; }
-        public int ActivateDescription { get; private set; }
+        public long ActivateDescription { get; private set; }
 
         public ChainInfo(ClientCard card)
             : this(card, card.Controller, 0)
         {
         }
 
-        public ChainInfo(ClientCard card, int player, int desc)
+        public ChainInfo(ClientCard card, int player, long desc)
         {
             RelatedCard = card;
             ActivatePlayer = player;

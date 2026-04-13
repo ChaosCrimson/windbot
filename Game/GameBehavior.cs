@@ -825,8 +825,9 @@ namespace WindBot.Game
             if (card.Id == 0)
                 card.SetId(cardId);
             int cc = GetLocalPlayer(packet.ReadByte());
-            packet.ReadInt16(); // trigger location + trigger sequence
-            int desc = packet.ReadInt32();
+            packet.ReadByte(); // trigger location
+            packet.ReadInt32(); // trigger sequence
+            long desc = packet.ReadInt64();
             if (_debug)
                 if (card != null) Logger.WriteLine("(" + cc.ToString() + " 's " + (card.Name ?? "UnKnowCard") + " activate effect)");
             _ai.OnChaining(card, cc);
