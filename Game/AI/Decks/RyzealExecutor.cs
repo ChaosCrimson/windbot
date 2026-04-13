@@ -147,11 +147,11 @@ namespace WindBot.Game.AI.Decks
         const int SetcodeOrcust = 0x11b;
         const int SetcodeSangen = 0x1a9;
         const int SetcodeTenpaiDragon = 0x1aa;
-        const int SetcodeBranded = 0x15d;
+        const int SetcodeBranded = 0x160;
         const int SetcodeFloowandereeze = 0x16d;
-        const int SetcodeLabrynth = 0x17e;
-        const int SetcodeTearlaments = 0x181;
-        const int SetcodeHorus = 0x19d;
+        const int SetcodeLabrynth = 0x17f;
+        const int SetcodeTearlaments = 0x182;
+        const int SetcodeHorus = 0x3;
         const int SetcodeRyzeal = 0x1b6;
         const int hintTimingMainEnd = 0x4;
         List<int> NotToNegateIdList = new List<int>
@@ -160,7 +160,7 @@ namespace WindBot.Game.AI.Decks
         };
         List<int> AlbazFusionList = new List<int>
         {
-            1906812, 38811586, 41373230, 44146295, 51409648, 51409648, 87746184
+            1906812, 38811586, 41373230, 44146295, 51409648, 76666602, 87746184, 03410461, 34848821
         };
         Dictionary<int, List<int>> DeckCountTable = new Dictionary<int, List<int>>{
             {3, new List<int> { CardId.IceRyzeal, CardId.SwordRyzeal, CardId.ExRyzeal, _CardId.AshBlossom, _CardId.EffectVeiler, CardId.SeventhTachyon,

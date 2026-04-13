@@ -130,7 +130,7 @@ namespace WindBot.Game.AI.Decks
         const int SetcodeTimeLord = 0x4a;
         const int SetcodePhantom = 0xdb;
         const int SetcodeOrcust = 0x11b;
-        const int SetcodeDogmatika = 0x145;
+        const int SetcodeDogmatika = 0x146;
         const int hintTimingMainEnd = 0x4;
         const int hintDamageStep = 0x2000;
 

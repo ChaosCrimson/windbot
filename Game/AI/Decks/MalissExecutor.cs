@@ -79,7 +79,7 @@ namespace WindBot.Game.AI.Decks
         const int SetcodeTimeLord = 0x4a;
         const int SetcodePhantom = 0xdb;
         const int SetcodeOrcust = 0x11b;
-        const int SetcodeHorus = 0x19d;
+        const int SetcodeHorus = 0x3;
         const int SetcodeDarkWorld = 0x6;
         const int SetcodeSkyStriker = 0x115;
 

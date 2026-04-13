@@ -169,10 +169,10 @@ namespace WindBot.Game.AI.Decks
         const int SetcodeTimeLord = 0x4a;
         const int SetcodePhantom = 0xdb;
         const int SetcodeOrcust = 0x11b;
-        const int SetcodeBranded = 0x15d;
-        const int SetcodeDespain = 0x164;
-        const int SetcodeBystial = 0x188;
-        const int SetcodeHorus = 0x19d;
+        const int SetcodeBranded = 0x160;
+        const int SetcodeDespain = 0x166;
+        const int SetcodeBystial = 0x189;
+        const int SetcodeHorus = 0x3;
         const int hintTimingMainEnd = 0x4;
         const int hintBattleStart = 0x8;
         List<int> notToNegateIdList = new List<int>{

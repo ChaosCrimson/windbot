@@ -972,7 +972,7 @@ namespace WindBot.Game.AI.Decks
             return 0;
         }
 
-        public override bool OnSelectYesNo(int desc)
+        public override bool OnSelectYesNo(long desc)
         {
             if (desc == Util.GetStringId(CardId.Sanctuary, 0))
             {
@@ -1170,7 +1170,7 @@ namespace WindBot.Game.AI.Decks
             base.OnChainEnd();
         }
 
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             if (player == 0)
             {

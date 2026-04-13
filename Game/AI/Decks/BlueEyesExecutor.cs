@@ -134,7 +134,7 @@ namespace WindBot.Game.AI.Decks
             base.OnNewTurn();
         }
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {
             Logger.DebugWriteLine("OnSelectCard " + cards.Count + " " + min + " " + max);
             if (max == 2 && cards[0].Location == CardLocation.Deck)

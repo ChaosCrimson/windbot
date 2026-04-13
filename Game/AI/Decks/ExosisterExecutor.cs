@@ -141,8 +141,8 @@ namespace WindBot.Game.AI.Decks
         const int SetcodeShadoll = 0x9d;
         const int SetcodeInferoid = 0xbb;
         const int SetcodeOrcust = 0x11b;
-        const int SetcodeExosister = 0x172;
-        const int SetcodeTearlaments = 0x181;
+        const int SetcodeExosister = 0x174;
+        const int SetcodeTearlaments = 0x182;
         List<int> SetcodeForDiamond = new List<int>{SetcodeShadoll, SetcodeInferoid, SetcodeTearlaments};
 
         List<int> affectGraveCardIdList = new List<int>{

@@ -153,9 +153,9 @@ namespace WindBot.Game.AI.Decks
         const int SetcodeTimeLord = 0x4a;
         const int SetcodePhantom = 0xdb;
         const int SetcodeOrcust = 0x11b;
-        const int SetcodeUnchained = 0x130;
-        const int SetcodeLabrynth = 0x17e;
-        const int SetcodeHorus = 0x19d;
+        const int SetcodeUnchained = 0x1130;
+        const int SetcodeLabrynth = 0x17f;
+        const int SetcodeHorus = 0x3;
         const int hintTimingMainEnd = 0x4;
         const int hintBattleStart = 0x8;
 

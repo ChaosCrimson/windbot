@@ -158,7 +158,7 @@ namespace WindBot.Game.AI.Decks
             base.OnNewTurn();
         }
 
-        public override bool OnSelectYesNo(int desc)
+        public override bool OnSelectYesNo(long desc)
         {
             // Yosenju Kama 2 shouldn't attack directly at most times
             if (Card == null)

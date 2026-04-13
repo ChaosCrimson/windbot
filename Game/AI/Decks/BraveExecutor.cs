@@ -196,7 +196,7 @@ namespace WindBot.Game.AI.Decks
             return 0;
         }
 
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             if (location == CardLocation.MonsterZone)
             {
@@ -213,7 +213,7 @@ namespace WindBot.Game.AI.Decks
             return 0;
         }
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> cards, int min, int max, long hint, bool cancelable)
         {
             if (hint != HintMsg.Destroy)
                 PhoenixSelectingTarget = 0;
@@ -265,7 +265,7 @@ namespace WindBot.Game.AI.Decks
             return base.OnSelectCard(cards, min, max, hint, cancelable);
         }
 
-        public override int OnSelectOption(IList<int> options)
+        public override int OnSelectOption(IList<long> options)
         {
             if (options.Count == 2 && options[0] == Util.GetStringId(CardId.CupidPitch, 1))
                 return 0;

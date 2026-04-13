@@ -83,33 +83,33 @@ namespace WindBot.Game.AI.Decks
             AddExecutor(ExecutorType.Summon, _CardId.ExodiaTheForbiddenOne, JustDontIt);
         }
 
-        private List<int> HintMsgForEnemy = new List<int>
+        private List<long> HintMsgForEnemy = new List<long>
         {
             HintMsg.Release, HintMsg.Destroy, HintMsg.Remove, HintMsg.ToGrave, HintMsg.ReturnToHand, HintMsg.ToDeck,
             HintMsg.FusionMaterial, HintMsg.SynchroMaterial, HintMsg.XyzMaterial, HintMsg.LinkMaterial, HintMsg.Disable
         };
 
-        private List<int> HintMsgForDeck = new List<int>
+        private List<long> HintMsgForDeck = new List<long>
         {
             HintMsg.SpSummon, HintMsg.ToGrave, HintMsg.Remove, HintMsg.AddToHand, HintMsg.FusionMaterial
         };
 
-        private List<int> HintMsgForSelf = new List<int>
+        private List<long> HintMsgForSelf = new List<long>
         {
             HintMsg.Equip
         };
 
-        private List<int> HintMsgForMaterial = new List<int>
+        private List<long> HintMsgForMaterial = new List<long>
         {
             HintMsg.FusionMaterial, HintMsg.SynchroMaterial, HintMsg.XyzMaterial, HintMsg.LinkMaterial, HintMsg.Release
         };
 
-        private List<int> HintMsgForMaxSelect = new List<int>
+        private List<long> HintMsgForMaxSelect = new List<long>
         {
             HintMsg.SpSummon, HintMsg.ToGrave, HintMsg.AddToHand, HintMsg.FusionMaterial, HintMsg.Destroy
         };
 
-        public override IList<ClientCard> OnSelectCard(IList<ClientCard> _cards, int min, int max, int hint, bool cancelable)
+        public override IList<ClientCard> OnSelectCard(IList<ClientCard> _cards, int min, int max, long hint, bool cancelable)
         {
             if (Duel.Phase == DuelPhase.BattleStart)
                 return null;
@@ -199,12 +199,12 @@ namespace WindBot.Game.AI.Decks
             return selected;
         }
 
-        public override int OnSelectOption(IList<int> options)
+        public override int OnSelectOption(IList<long> options)
         {
             return Program.Rand.Next(options.Count);
         }
 
-        public override CardPosition OnSelectPosition(int cardId, IList<CardPosition> positions)
+        public override CardPosition OnSelectPosition(long cardId, IList<CardPosition> positions)
         {
             YGOSharp.OCGWrapper.NamedCard cardData = YGOSharp.OCGWrapper.NamedCard.Get(cardId);
             if (cardData != null)

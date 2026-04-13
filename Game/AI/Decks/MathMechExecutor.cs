@@ -364,7 +364,7 @@ namespace WindBot.Game.AI.Decks
             }
         }
 
-        public override int OnSelectPlace(int cardId, int player, CardLocation location, int available)
+        public override int OnSelectPlace(long cardId, int player, CardLocation location, int available)
         {
             if (cardId == CardId.MathmechFinalSigma)
             {
