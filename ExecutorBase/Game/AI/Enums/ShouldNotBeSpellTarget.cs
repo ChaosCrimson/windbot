@@ -11,6 +11,7 @@
         TheLegendaryFishermanIII = 44968687,
         ChaosAncientGearGiant = 51788412,
         DrytronMeteonisQuadrantids = 95209656,
+        QliphortGenius = 22423493,
         ElShaddollMeshahrail = 32467459
     }
 }

@@ -109,6 +109,19 @@
         TheGazeOfTimaeus = 22283204,
         MutinyInTheSky = 71593652,
         HuntingHorn = 55421040,
-        BlazingCartesia = 95515789
+        BlazingCartesia = 95515789,
+        MagnetWarriorSigmaMinus = 87814728,
+        MagentBonding = 65514302,
+        ArtmageNonFinito = 74631897,
+        DDDAlfredTheDivineSageKing = 11852093,
+        DoubleInterlock = 38129297,
+        DarklordDance = 99941223,
+        HecahandsMakibel = 18321034,
+        PredaplantBaalthea = 66787942,
+        AstrographSorcerertheStarMagician = 48171151,
+        OverloadFutureFusion = 33099732,
+        FutureFusionNova = 92058902,
+        RevolutionCyberDragon = 66664203,
+        StarvingVenomFusionDragonoftheFourHeavenlyDragons = 27118421
     }
 }

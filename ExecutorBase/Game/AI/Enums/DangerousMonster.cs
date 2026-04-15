@@ -28,7 +28,10 @@
         PhantomOfYubel = 80453041,
         UzuhimeTheManifestedMikanko = 57566760,
         MaidenInLove = 8445808,
-        MatadorArchfiend = 7622360
+        MatadorArchfiend = 7622360,
+        RedNovaDragonAssaultMode = 82323997,
+        CrimsonBladeDragon = 3294539
+        
     }
 }
 

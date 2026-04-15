@@ -31,7 +31,8 @@ namespace WindBot.Game.AI.Enums
         NightmareMagician = 40221691,
         ArahimetheManifestedMikanko = 75771170,
         UzuhimeTheManifestedMikanko = 57566760,
-        ArchfiendMatador = 7622360
+        ArchfiendMatador = 7622360,
+        CrimsonBladeDragon = 3294539
     }
     /// <summary>
     /// Cards that are invincible in battle.

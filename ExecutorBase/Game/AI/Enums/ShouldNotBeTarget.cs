@@ -54,6 +54,11 @@
         RaidraptorRisingRebellionFalcon = 71222868,
         Number97Draglubion = 28400508,
         SaintAzamina = 85065943,
-        LunalightLigerDancer = 54701958
+        LunalightLigerDancer = 54701958,
+        DarklordEveningstar = 10136446,
+        TheFirstDarklord = 4167084,
+        StormBaneDragonDestorbim = 94641726,
+        PowerPatronVidrium = 70488851,
+        RedHypernovaDragon = 30698243
     }
 }

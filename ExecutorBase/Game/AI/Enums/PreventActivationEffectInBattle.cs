@@ -1,5 +1,8 @@
 ﻿namespace WindBot.Game.AI.Enums
 {
+    /// <summary>
+    /// Monsters that prevent an opponent from using effects on attack declaration or in the damage step
+    /// </summary>
     public enum PreventActivationEffectInBattle
     {
         Deskbot009 = 25494711,
@@ -13,6 +16,6 @@
         NumberS39UtopiaTheLightning = 56832966,
         DualAvatarEmpoweredKonGyo = 33026283,
         GoukiTheTyrantOgre = 7782069,
-        SangenpaiTranscendentDragion = 18969888
+        SangenpaiTranscendentDragion = 18969888         //Technically stopping any effects in BP counts
     }
 }

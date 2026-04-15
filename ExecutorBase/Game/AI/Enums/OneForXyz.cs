@@ -27,5 +27,6 @@
         Argostars_SwiftCapane = 91284003,
         Argostars_SlayerEteo = 38379052,
         Argostars_FierceParthe = 21050476
+        //HeavyKnightBabelDecker = 45116390        //Unsure if this should be included as its conditional
     }
 }
